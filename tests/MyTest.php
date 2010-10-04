@@ -21,7 +21,16 @@ class MyTest extends Test
 		$this->get('/exact.php','test.localhost')
 			->assertContains('just a get');
 	}
-	
+	public function test5()
+	{
+		$this->get('/','www.google.com')
+			->assertResponseCode('300');
+	}
+	public function test6()
+	{
+		$this->get('/','www.google.com')
+			->assertCookieIsSet('PREF_ID');
+	}
 }
 
 ?>
