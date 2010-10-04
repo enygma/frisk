@@ -11,5 +11,17 @@ The current feature set allows you to:
 	- make GET requests
 	- check results for exact equal
 	- check results for containing match
+	
+Install
+--------------
+No install really needed - tests go in the /tests folder and the "frisk"
+file needs to be made executable. Oh, and you might want to change the PHP
+path at the top of it.
+
+TODO
+--------------
+> allow for a config file
+> standardize the interfaces for asserts/actions
+> (obvious) add more actions and assertions...
 
 Author: Chris Cornutt <ccornutt@phpdeveloper.org>
