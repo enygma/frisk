@@ -1,0 +1,37 @@
+#!/usr/bin/php
+<?php
+/**
+* Function Testing Framework - PoC
+*
+* GOAL: Create a basic structure that can be used to send requests to a site and
+* verify things like respose code and page contents.
+* 
+* FILES:
+* > runner - this file, executes the tests defined by config file
+* > config.ini - optional config file (defaults defined in config class
+* > lib/ - contains application libraries
+* > tests/ - default directory for tests, can be overriden in config 
+*
+* Autoloader points to the lib/asserts directory for handling assertion calls 
+*/
+function __autoload($class){ include_once $class.'.php'; }
+
+set_include_path(get_include_path().
+	PATH_SEPARATOR.__DIR__.'/lib'.
+	PATH_SEPARATOR.__DIR__.'/lib/Action'.
+	PATH_SEPARATOR.__DIR__.'/lib/Assert'.
+	PATH_SEPARATOR.__DIR__.'/tests');
+
+echo "Start!\n\n";
+
+$runner = new Runner();
+try{
+	$runner->execute();
+	echo "=====================\n";
+	echo 'ending status: '; print_r($runner->testResults);
+}catch(Exception $e){
+	echo $e->getMessage();
+}
+
+echo "\n\n";
+?>
