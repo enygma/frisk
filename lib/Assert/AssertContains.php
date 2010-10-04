@@ -15,7 +15,7 @@ class AssertContains extends Assert
 			$findin		= $this->assertArguments[1];
 		}elseif(count($this->assertArguments)==1 && isset($this->input)){
 			$find		= $this->assertArguments[0];
-			$findin		= $this->input;
+			$findin		= $this->input['httpOutput'];
 		}else{ throw new Exception(get_class().''); }
 		
 		// check to see if it's there!

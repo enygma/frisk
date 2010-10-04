@@ -5,7 +5,8 @@ class ActionPost extends Action
 	private $postLocation 	= '';
 	private $postData		= array();
 	private $postHost		= '';
-	public $output 			= null;
+	public $httpOutput 			= null;
+	public $headers			= null;
 	
 	/* action post */
 	public function __construct($arg)
@@ -25,7 +26,13 @@ class ActionPost extends Action
 		$http->setPostFields($this->postData);
 		
 		try {
-			$this->output=$http->send()->getBody();
+			$this->output=array(
+				'httpObject'		=> $http,
+				'httpResponseObject'=> $http->send(),
+				'httpOutput'		=> $http->getResponseBody(),
+				'httpResponseCode'	=> $http->getResponseCode(),
+				'httpHeaders'		=> $http->getResponseHeader()
+			);
 		}catch(HttpException $e){
 			throw new Exception(get_class().' '.$e->getMessage());
 		}

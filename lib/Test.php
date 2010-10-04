@@ -23,7 +23,7 @@ class Test
 			$assertName = 'Assert'.ucwords(strtolower($match[1]));
 			try{
 				$obj = new $assertName($arg);
-				$obj->input=(isset($this->output)) ? $this->output : null;
+				$obj->input		= (isset($this->output)) ? $this->output : null;
 				$obj->assertSetup();
 				$obj->assertExecute();
 				$obj->assertTeardown();
@@ -37,8 +37,8 @@ class Test
 			// assume it's an action
 			$actionName='Action'.ucwords(strtolower($name));
 			try {
-				$obj = new $actionName($arg);
-				$this->output=$obj->output;
+				$obj 			= new $actionName($arg);
+				$this->output	= $obj->output;
 				return $this;
 			}catch(Exception $e){
 				echo 'error: '.$e->getMessage();

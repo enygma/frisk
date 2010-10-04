@@ -15,7 +15,7 @@ class AssertEquals extends Assert
 			$compare2 = $this->assertArguments[1];
 		}elseif(count($this->assertArguments)==1 && isset($this->input)){
 			$compare1 = $this->assertArguments[0];
-			$compare2 = $this->input;
+			$compare2 = $this->input['httpOutput'];
 		}else{
 			throw new Exception(get_class().': Not enough parameters!');
 		}
