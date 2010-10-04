@@ -1,4 +1,15 @@
 #######################
-#
-#
+Frisk : Lightweight Functional Testing
 #######################
+
+Frisk is (mostly) a proof-of-concept functional testing framework. It allows
+for simple gets/posts and passing the results through assertions to test their 
+content.
+
+The current feature set allows you to:
+	- make POST requests
+	- make GET requests
+	- check results for exact equal
+	- check results for containing match
+
+Author: Chris Cornutt <ccornutt@phpdeveloper.org>
