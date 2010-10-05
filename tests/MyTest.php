@@ -31,6 +31,13 @@ class MyTest extends Test
 		$this->get('/','www.google.com')
 			->assertCookieIsSet('PREF_ID');
 	}
+	public function test7()
+	{
+		$fields=array('test'=>'here');
+		$this->get('/form.php','test.localhost')
+			->setField($fields)
+			->submitForm();
+	}
 }
 
 ?>
