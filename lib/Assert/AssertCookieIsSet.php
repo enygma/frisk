@@ -18,4 +18,4 @@ class AssertCookieIsSet extends Assert
 	}
 }
 
-?>;
+?>
