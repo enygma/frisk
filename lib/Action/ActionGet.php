@@ -21,7 +21,7 @@ class ActionGet extends Action
 				'httpHeaders'		=> $http->getResponseHeader()
 			);
 		}catch(Exception $e){
-			throw new Exception(get_class().' '.$e->getMessage());
+			throw new Exception(get_class().': '.$e->getMessage());
 		}
 	}
 }

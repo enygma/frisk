@@ -37,7 +37,8 @@ class Test
 			// assume it's an action
 			$actionName='Action'.ucwords(strtolower($name));
 			try {
-				$obj 			= new $actionName($arg);
+				$optionalArgs	= get_defined_vars($this);
+				$obj 			= new $actionName($arg,$optionalArgs);
 				$this->output	= $obj->output;
 				return $this;
 			}catch(Exception $e){
