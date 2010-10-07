@@ -1,6 +1,6 @@
 <?php
 
-class ActionSetField extends Action
+class ActionSetfield extends Action
 {
 	public function __construct($arg,$optionalArgs=null)
 	{
@@ -15,6 +15,8 @@ class ActionSetField extends Action
 		$httpBody = parent::$currentHttp->getBody();
 		
 		$arr=array('test'=>'foo');
+
+		HelperParseHtml::execute($httpBody);
 		
 		
 		
