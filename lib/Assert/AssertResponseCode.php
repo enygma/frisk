@@ -7,11 +7,11 @@ class AssertResponseCode extends Assert
 	
 	public function assertExecute()
 	{
-		$httpCode 		= $this->assertArguments[0];
-		$httpResponse 	= $this->input['httpResponseCode'];
+		$httpCode 		= parent::$currentArguments[0];
+		$httpResponse 	= parent::$currentHttp->getResponseCode();
 		
 		if($httpCode!=$httpResponse){
-			throw new Exception(get_class().': No match on HTTP response code!');
+			throw new Exception(get_class().': No match on HTTP response code ('.$httpCode.')!');
 		}
 	}
 }

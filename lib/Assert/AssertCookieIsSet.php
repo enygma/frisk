@@ -7,8 +7,9 @@ class AssertCookieIsSet extends Assert
 	
 	public function assertExecute()
 	{
-		$httpCookieName = $this->assertArguments[0];
-		$httpCookies	= $this->input['httpObject']->getResponseCookies();
+		$httpHeaders	= parent::$currentHttp->getHeaders();
+		$httpCookieName = parent::$currentArguments[0];
+		$httpCookies	= $httpHeaders['Set-Cookie'];
 		
 		if(count(array_walk($httpCookies,function(&$value,$key,$cookieName){
 			if(!isset($value->cookies[$cookieName])){ unset($value); }

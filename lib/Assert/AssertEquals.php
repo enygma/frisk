@@ -10,17 +10,16 @@ class AssertEquals extends Assert
 	 */
 	public function assertExecute()
 	{	
-		if(count($this->assertArguments)==2){
-			$compare1 = $this->assertArguments[0];
-			$compare2 = $this->assertArguments[1];
-		}elseif(count($this->assertArguments)==1 && isset($this->input)){
-			$compare1 = $this->assertArguments[0];
-			$compare2 = $this->input['httpOutput'];
+		$compareTo 		= parent::$currentArguments[0];
+		
+		if(!isset(parent::$currentArguments[1])){
+			// If we're not given two terms, match against the body of the latest httpRequest
+			$compareAgainst = parent::$currentHttp->getBody();
 		}else{
-			throw new Exception(get_class().': Not enough parameters!');
+			$compareAgainst = parent::$currentArguments[1];
 		}
 		
-		if($compare1!=$compare2){
+		if(trim($compareAgainst)!=trim($compareTo)){
 			throw new Exception(get_class().': Values not equal!');
 		}
 	}
