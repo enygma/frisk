@@ -5,7 +5,8 @@ class Test
 	/**
 	 * Store the test status
 	 */
-	public $testStatus = array();
+	public $testStatus 		= array();
+	private $currentHttp 	= null;
 	
 	public function __call($name,$arg)
 	{
@@ -22,7 +23,7 @@ class Test
 			preg_match('/assert(.*)?/i',$name,$match);
 			$assertName = 'Assert'.ucwords(strtolower($match[1]));
 			try{
-				$obj = new $assertName($arg);
+				$obj = new $assertName($this->currentHttp,$arg);
 				$obj->input		= (isset($this->output)) ? $this->output : null;
 				$obj->assertSetup();
 				$obj->assertExecute();
@@ -33,13 +34,20 @@ class Test
 			}catch(Exception $e){
 				$this->testStatus[$testName]=array('fail',$e->getMessage());
 			}
+			return $this;
 		}else{
 			// assume it's an action
 			$actionName='Action'.ucwords(strtolower($name));
 			try {
 				$optionalArgs	= get_defined_vars($this);
-				$obj 			= new $actionName($arg,$optionalArgs);
-				$this->output	= $obj->output;
+				$actionObj 			= new $actionName($this->currentHttp,$arg);
+				$returnObj		= $actionObj->execute();
+				
+				if($returnObj instanceof HttpMessage){ 
+					$this->currentHttp=$returnObj;
+				}
+				
+				//$this->output	= $obj->output;
 				return $this;
 			}catch(Exception $e){
 				echo 'error: '.$e->getMessage();
