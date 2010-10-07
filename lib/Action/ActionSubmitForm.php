@@ -10,6 +10,9 @@ class ActionSubmitForm extends Action
 		
 		$this->output='';
 	}
+	public function execute(){
+		
+	}
 }
 
 ?>

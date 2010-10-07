@@ -7,19 +7,14 @@ class ActionGet extends Action
 	private $getLocation = '';
 	private $getHost	 = '';
 	
-	public function __construct($args){
-		$this->getHost 		= $args[1];
-		$this->getLocation 	= 'http://'.$this->getHost.'/'.$args[0];
+	public function execute()
+	{
+		$this->getHost 		= parent::$currentArguments[1];
+		$this->getLocation 	= 'http://'.$this->getHost.'/'.parent::$currentArguments[0];
 		
 		$http = new HttpRequest($this->getLocation,HttpRequest::METH_GET);
 		try {
-			$this->output=array(
-				'httpObject'		=> $http,
-				'httpResponseObject'=> $http->send(),
-				'httpOutput'		=> $http->getResponseBody(),
-				'httpResponseCode'	=> $http->getResponseCode(),
-				'httpHeaders'		=> $http->getResponseHeader()
-			);
+			return $http->send();
 		}catch(Exception $e){
 			throw new Exception(get_class().': '.$e->getMessage());
 		}
