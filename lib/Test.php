@@ -43,7 +43,7 @@ class Test
 				$actionObj 			= new $actionName($this->currentHttp,$arg);
 				$returnObj		= $actionObj->execute();
 				
-				if($returnObj instanceof HttpMessage){ 
+				if($returnObj instanceof HttpMessage){
 					$this->currentHttp=$returnObj;
 				}
 				

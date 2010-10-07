@@ -1,6 +1,6 @@
 <?php
 
-class ActionSubmitForm extends Action
+class ActionSubmitform extends Action
 {
 	public function __construct($args,$optionalArgs=null)
 	{

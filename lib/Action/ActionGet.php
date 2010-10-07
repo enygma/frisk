@@ -4,7 +4,7 @@ class ActionGet extends Action
 {
 	public $output 		 = null;
 	public $headers		 = null;
-	private $getLocation = '';
+	private $getLocation 	 = '';
 	private $getHost	 = '';
 	
 	public function execute()
