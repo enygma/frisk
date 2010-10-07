@@ -20,6 +20,7 @@ set_include_path(get_include_path().
 	PATH_SEPARATOR.__DIR__.'/lib'.
 	PATH_SEPARATOR.__DIR__.'/lib/Action'.
 	PATH_SEPARATOR.__DIR__.'/lib/Assert'.
+	PATH_SEPARATOR.__DIR__.'/lib/Helper'.
 	PATH_SEPARATOR.__DIR__.'/tests');
 
 echo "Start!\n\n";
