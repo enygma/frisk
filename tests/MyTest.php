@@ -37,7 +37,7 @@ class MyTest extends Test
 	public function test7()
 	{
 		$fields=array('test'=>'here');
-		$this->get('/form.php','test.localhost')
+		$this->get('/','www.google.com')
 			->setField($fields)
 			->submitForm();
 	}
