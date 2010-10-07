@@ -19,7 +19,8 @@ class MyTest extends Test
 	public function test4()
 	{
 		$this->get('/exact.php','test.localhost')
-			->assertContains('just a get');
+			->assertContains('just a get')
+			->assertEquals('i think this is just a get');
 	}
 	public function test5()
 	{
@@ -31,6 +32,8 @@ class MyTest extends Test
 		$this->get('/','www.google.com')
 			->assertCookieIsSet('PREF_ID');
 	}
+	
+	// this is going to be the tough one...
 	public function test7()
 	{
 		$fields=array('test'=>'here');
