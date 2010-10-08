@@ -23,10 +23,33 @@ No install really needed - tests go in the /tests folder and the "frisk"
 file needs to be made executable. Oh, and you might want to change the PHP
 path at the top of it.
 
+Example:
+--------------
+<?php
+
+class MyTest extends Test {
+
+	public function test(){
+		$data=array('key1'=>'value1');
+		$this->get('/foo.php','www.myhost.com')
+			->submitForm($data)
+			->assertContains('foo');
+	}
+
+}
+
+?>
+
+Additionally, assertions can be called with "Not" in them to negate the check.
+For example:
+	->assertContains('foo');
+	versus
+	->assertNotContains('foo');
+
 TODO
 --------------
 > allow for a config file
-> standardize the interfaces for asserts/actions
 > (obvious) add more actions and assertions...
+> handle action/assert find failures
 
 Author: Chris Cornutt <ccornutt@phpdeveloper.org>

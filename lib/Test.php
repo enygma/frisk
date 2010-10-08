@@ -13,6 +13,7 @@ class Test
 		// going back up, our original test name is in $backtrace[2]
 		$backtrace	= debug_backtrace();
 		$testName	= $backtrace[2]['function'];
+		$negate		= false;
 		
 		// if the first part is "assert, call the assert.
 		// otherwise, try an action
@@ -21,6 +22,13 @@ class Test
 		if(stristr($name,'assert')){
 			// it's an assertion!
 			preg_match('/assert(.*)?/i',$name,$match);
+
+			//check for "not"
+			if(strtolower(substr($match[1],0,3))=='not'){
+				$match[1]=str_replace('not','',strtolower($match[1]));
+				$negate=true;
+			}
+
 			$assertName = 'Assert'.ucwords(strtolower($match[1]));
 			try{
 				$obj = new $assertName($this->currentHttp,$arg);
@@ -33,6 +41,10 @@ class Test
 				$this->testStatus[$testName]=array('pass','');
 			}catch(Exception $e){
 				$this->testStatus[$testName]=array('fail',$e->getMessage());
+			}
+			// If we're negating, set the flag back over
+			if($negate){
+				$this->testStatus[$testName][0]=($this->testStatus[$testName][0]=='pass') ? 'fail' : 'pass';
 			}
 			return $this;
 		}else{
