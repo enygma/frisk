@@ -22,10 +22,17 @@ class ActionSubmitform extends Action
 		$httpBody = parent::$currentHttp->getBody();
 		$parameters=array('httpBody'=>$httpBody);
 		HelperForm::execute($parameters);
-		
+
 		$httpRequest 	= parent::$currentHttp;
 		$arguments	= parent::$currentArguments;
 		$urlParts 	= parse_url(parent::$optionalArguments['getLocation']);
+
+		// Ensure that there's fields for the values we want to post
+		foreach($arguments[0] as $fieldName=>$fieldValue){
+			if(!HelperForm::isFormField($fieldName)){
+				throw new Exception(get_class().': Form field "'.$fieldName.'" not found on remote resource');
+			}
+		}	
 
 		$arguments=array(
 			$urlParts['path'],
@@ -35,6 +42,8 @@ class ActionSubmitform extends Action
 		
 		$post = new ActionPost($httpRequest,$arguments);
 		$http=$post->execute();
+	
+		vaR_dump($http->getBody());
 
 		if($http->getResponseCode()!=200){
 			throw new Exception(get_class().': Posting Unsuccessful ('.$http->getResponseCode().')');
