@@ -2,16 +2,22 @@
 
 class ActionSubmitform extends Action
 {
-	public function __construct($args,$optionalArgs=null)
-	{
-		// make a post request here with our data, if set
-		// look for the vars in the optional array
-		//var_dump($optionalArgs);
-		
-		$this->output='';
-	}
 	public function execute(){
 		
+		$httpBody = parent::$currentHttp->getBody();
+		$parameters=array('httpBody'=>$httpBody);
+		HelperForm::execute($parameters);
+		
+		$httpRequest 	= parent::$currentHttp;
+		$arguments		= parent::$currentArguments;
+		
+		$httpRequest->setType(HTTP_MSG_REQUEST);
+		
+		var_dump($arguments);
+		
+		$post = new ActionPost($httpRequest,$arguments);
+		$http=$post->execute();
+		var_dump($http);
 	}
 }
 

@@ -36,10 +36,9 @@ class MyTest extends Test
 	// this is going to be the tough one...
 	public function test7()
 	{
-		$fields=array('test'=>'here');
+		$formData=array('q'=>'php');
 		$this->get('/','www.google.com')
-			->setField($fields)
-			->submitForm();
+			->submitForm($formData);
 	}
 }
 

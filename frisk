@@ -29,7 +29,7 @@ $runner = new Runner();
 try{
 	$runner->execute();
 	echo "=====================\n";
-	echo 'ending status: '; print_r($runner->testResults);
+	//echo 'ending status: '; print_r($runner->testResults);
 }catch(Exception $e){
 	echo $e->getMessage();
 }

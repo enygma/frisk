@@ -10,13 +10,17 @@ class ActionSetfield extends Action
 		
 		$httpBody = parent::$currentHttp->getBody();
 
-		$parameters=array(
-			'fieldName'	=> 'logo',
-			'httpBody'	=> $httpBody
-		);
+		$parameters=array('httpBody'=>$httpBody);
 
 		HelperForm::execute($parameters);
-		
+		if(HelperForm::isFormFieldByName('q')){
+			echo 'match';
+			
+			$data=array('q'=>'php');
+			//HelperForm::setFormData($data);
+			
+			
+		}else{ echo 'no match'; }
 		
 		
 	}

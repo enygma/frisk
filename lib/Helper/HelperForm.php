@@ -10,37 +10,50 @@
 
 class HelperForm extends Helper 
 {
-	private $parsedHTML = null;
+	static $parsedHTML 	= null;
+	static $inputTypes	= array('input','textarea');
+	static $postData	= array();
 
 	/**
 	* Load in the HTML and get it ready for the following calls
 	*/
 	public function execute($arguments){
-
+		
 		$htmlToParse 	= $arguments['httpBody'];
-		$fieldName	= $arguments['fieldName'];
+		
+		//echo $htmlToParse;
 
 		$parsedToDom = new DOMDocument();
-		$parsedToDom->loadHTML($htmlToParse);
+		@$parsedToDom->loadHTML($htmlToParse);
 
 		$xml=simplexml_import_dom($parsedToDom);
-		$this->parsedHTML=$xml;
-
-		$ret=$xml->xpath("//*[@id='".$fieldName."']");
-		var_dump($ret);
-
+		self::$parsedHTML=$xml;
 	}
 
 	/**
 	* Check to see if a form field exists by that name
 	*/
-	public function isFormFieldByName($fieldName){
+	public static function isFormField($fieldName,$fieldType='name'){
+		$matches=self::$parsedHTML->xpath("//*[@".$fieldType."='".$fieldName."']");
+		// check to ensure that there's at least one matching
+		if($matches && count($matches)>0){
+			foreach($matches as $match){
+				if(in_array(strtolower($match->getName()),self::$inputTypes)){
+					return true;
+				}
+			}
+		}else{ return false; }
 	}
 
 	/**
-	* Check to see if a form field wth that ID exists
+	* Check to see if a form field with that ID exists
 	*/
-	public function isFormFieldById($fieldId){
+	public static function isFormFieldById($fieldId){
+		return self::isFormField($fieldId,'id');
+	}
+	
+	public static function setFormData($formData){
+		self::$postData = $formData;
 	}
 
 }

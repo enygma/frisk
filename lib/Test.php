@@ -40,7 +40,7 @@ class Test
 			$actionName='Action'.ucwords(strtolower($name));
 			try {
 				$optionalArgs	= get_defined_vars($this);
-				$actionObj 			= new $actionName($this->currentHttp,$arg);
+				$actionObj 		= new $actionName($this->currentHttp,$arg);
 				$returnObj		= $actionObj->execute();
 				
 				if($returnObj instanceof HttpMessage){
