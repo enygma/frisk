@@ -7,13 +7,33 @@ abstract class Assert
 	abstract protected function assertSetup();
 	abstract protected function assertTeardown();
 	
+	/**
+	* Assertion arguments
+	* @var array
+	*/
 	public $assertArguments 	= array();
+
+	/**
+	* Assert arguments (incoming from call)
+	* @var array
+	*/
 	static $currentArguments 	= null;
+
+	/**
+	* Current HTTP connection resource (HttpMessage)
+	* @var object
+	*/
 	static $currentHttp 		= null;
 	
-	public function __construct($http,$args){
+	/**
+	* Create the Assert object and set some based variables
+	*
+	* @return void
+	*/
+	public function __construct($http,$args)
+	{
 		self::$currentArguments	= $args;
-		self::$currentHttp 		= $http;
+		self::$currentHttp 	= $http;
 	}
 }
 

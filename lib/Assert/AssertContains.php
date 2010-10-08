@@ -1,5 +1,10 @@
 <?php
-
+/**
+* Assertion Class: Checks to see if one value contains the other
+*
+* @author Chris Cornutt <ccornutt@phpdeveloper.org>
+* @package Frisk
+*/
 class AssertContains extends Assert
 {
 	public function assertSetup(){}
@@ -7,6 +12,7 @@ class AssertContains extends Assert
 	
 	/**
 	 * Evaluate that one value contains the other
+	 * @return boolean
 	 */
 	public function assertExecute()
 	{	
@@ -17,6 +23,7 @@ class AssertContains extends Assert
 		if(!stristr($matchAgainst,$toFind)){
 			throw new Exception(get_class().': Term not found');
 		}
+		return true;
 	}
 }
 

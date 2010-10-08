@@ -1,12 +1,20 @@
 <?php
-/* Assert that value is equal to another given */
-
+/**
+ * Assertion Class - Assert that one value is equal to another
+ *
+ * @author Chris Cornutt <ccornutt@phpdeveloper.org>
+ * @package Frisk
+ */
 class AssertEquals extends Assert 
 {
 	public function assertSetup(){}
 	public function assertTeardown(){}
+
 	/**
-	 * Evaluate that the two values given are equal
+	 * Main execution method - Evaluate that the two values given are equal
+	 *
+	 * @return boolean
+	 * @throws Exception
 	 */
 	public function assertExecute()
 	{	
@@ -22,6 +30,7 @@ class AssertEquals extends Assert
 		if(trim($compareAgainst)!=trim($compareTo)){
 			throw new Exception(get_class().': Values not equal!');
 		}
+		return true;
 	}
 
 }
