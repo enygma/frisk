@@ -36,9 +36,10 @@ class MyTest extends Test
 	// this is going to be the tough one...
 	public function test7()
 	{
-		$formData=array('q'=>'php');
-		$this->get('/','www.google.com')
-			->submitForm($formData);
+		$formData=array('mytest'=>'testing this');
+		$this->get('/form_test.php','www.talkingpixels.org')
+			->submitForm($formData)
+			->assertContains('bleh',TEST::TYPE_XPATH);
 	}
 }
 
