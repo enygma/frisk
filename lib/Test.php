@@ -39,15 +39,19 @@ class Test
 			// assume it's an action
 			$actionName='Action'.ucwords(strtolower($name));
 			try {
-				$optionalArgs	= get_defined_vars($this);
-				$actionObj 		= new $actionName($this->currentHttp,$arg);
-				$returnObj		= $actionObj->execute();
+				$actionObj = new $actionName($this->currentHttp,$arg);
+
+				// If we have optional arguments from before, merge
+				$opt=(count($actionObj::$optionalArguments)>0) ? $actionObj::$optionalArguments : array();
+				$actionObj::$optionalArguments=array_merge(get_defined_vars($this),$opt);
 				
+				$returnObj = $actionObj->execute();
+
 				if($returnObj instanceof HttpMessage){
 					$this->currentHttp=$returnObj;
 				}
 				
-				//$this->output	= $obj->output;
+				// return thyself!
 				return $this;
 			}catch(Exception $e){
 				echo 'error: '.$e->getMessage();
