@@ -35,7 +35,7 @@ class Runner
 		$testFiles=array();
 		$dir = new DirectoryIterator($this->testsDir);
 		foreach($dir as $file){
-			if(!$file->isDot() && strstr($file->getFilename(),'Test')){
+			if(!$file->isDot() && strstr($file->getFilename(),'Test') && substr($file->getFilename(),-3)=='php'){
 				$testFiles[]=str_replace('.php','',$file->getFilename());
 			}
 		}
