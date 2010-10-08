@@ -5,8 +5,10 @@ class Test
 	/**
 	 * Store the test status
 	 */
-	public $testStatus 		= array();
+	public $testStatus 	= array();
 	private $currentHttp 	= null;
+
+	const TYPE_XPATH 	= 1;
 	
 	public function __call($name,$arg)
 	{
