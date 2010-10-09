@@ -2,7 +2,7 @@
 
 class MyTest extends Test
 {	
-	public function test1()
+	/*public function test1()
 	{
 		$this->assertEquals('test1','test2');
 	}
@@ -32,14 +32,29 @@ class MyTest extends Test
 		$this->get('/','www.google.com')
 			->assertCookieIsSet('PREF_ID');
 	}
-	
+	*/
 	// this is going to be the tough one...
 	public function test7()
 	{
 		$formData=array('mytest'=>'testing this');
 		$this->get('/form_test.php','www.talkingpixels.org')
 			->submitForm($formData)
-			->assertContains('bleh',TEST::TYPE_XPATH);
+			->assertContains("//*[@name='mytest']",TEST::TYPE_XPATH);
+	}
+	/*public function test8()
+	{
+		$this->get('/form_test.php?bar=1','www.talkingpixels.org')
+			->assertContains('foo');
+	}*/
+	/*public function test9()
+	{
+		$this->get('/exact.php','test.localhost')
+			->assertContains('just a noget')
+			->assertEquals('i think this is just a get');
+	}*/
+	public function test10()
+	{
+		$this->markTestSkipped("I just can't finish it!");
 	}
 }
 
