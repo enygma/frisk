@@ -17,13 +17,19 @@ class Runner
 		
 		foreach($tests as $test){
 			$testObj = new $test();
+			
 			// We have our class of tests, reflect the methods and execute
 			$ref = new ReflectionClass($testObj);
 			$methods = $ref->getMethods();
 		
 			foreach($methods as $method){
 				if($method->class==get_class($testObj)){
-					$testObj->{$method->name}();
+					// set up our message object
+					$msgObj  = new Message();
+					$msgObj::setCurrentTest($method->name);
+					$testObj::setCurrentMessage($msgObj);
+					
+					$testObj->{$method->name}($msgObj);
 					if(!empty($testObj->testStatus)){
 						$this->testResults[$test]=$testObj->testStatus;
 					}
