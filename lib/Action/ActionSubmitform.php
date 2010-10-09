@@ -42,8 +42,6 @@ class ActionSubmitform extends Action
 		
 		$post = new ActionPost($httpRequest,$arguments);
 		$http=$post->execute();
-	
-		vaR_dump($http->getBody());
 
 		if($http->getResponseCode()!=200){
 			throw new Exception(get_class().': Posting Unsuccessful ('.$http->getResponseCode().')');
