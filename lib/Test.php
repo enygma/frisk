@@ -6,12 +6,23 @@ class Test
 	 * Store the test status
 	 */
 	public $testStatus 	= array();
+	public $optionalArguments;
 	private $currentHttp 	= null;
+	static $currentMessage = null;
 
 	const TYPE_XPATH 	= 1;
 	
-	public function __call($name,$arg)
+	public static function setCurrentMessage(&$msgObj)
 	{
+		self::$currentMessage=$msgObj;
+	}
+	public static function getCurrentMessage()
+	{
+		return self::$currentMessage;
+	}
+	
+	public function __call($name,$arg)
+	{	
 		// going back up, our original test name is in $backtrace[2]
 		$backtrace	= debug_backtrace();
 		$testName	= $backtrace[2]['function'];
@@ -20,6 +31,8 @@ class Test
 		// if the first part is "assert, call the assert.
 		// otherwise, try an action
 		$path = __DIR__.'/'.((stristr($name,'assert')) ? 'lib/Assert' : 'lib/Action');
+		$currentMessage=&self::getCurrentMessage();
+		$currentMessage::setData('currentArguments',$arg);
 		
 		if(stristr($name,'assert')){
 			// it's an assertion!
@@ -33,8 +46,11 @@ class Test
 
 			$assertName = 'Assert'.ucwords(strtolower($match[1]));
 			try{
-				$obj = new $assertName($this->currentHttp,$arg);
-				$obj->input		= (isset($this->output)) ? $this->output : null;
+				$obj = new $assertName($this->currentHttp,$arg);	
+				$obj->optionalArguments=$this->optionalArguments;
+				
+				$obj::setCurrentMessage($currentMessage);
+				
 				$obj->assertSetup();
 				$obj->assertExecute();
 				$obj->assertTeardown();
@@ -49,28 +65,34 @@ class Test
 				$this->testStatus[$testName][0]=($this->testStatus[$testName][0]=='pass') ? 'fail' : 'pass';
 			}
 			return $this;
+		}elseif(stristr($name,'marktest')){
+			preg_match('/marktest(.*)?/i',$name,$match);
+			$this->testStatus[$testName]=array(null,ucwords($match[1].': '.$arg[0]));
 		}else{
 			// assume it's an action
 			$actionName='Action'.ucwords(strtolower($name));
 			try {
 				$actionObj = new $actionName($this->currentHttp,$arg);
+		
+				$actionObj::setCurrentMessage($currentMessage);
 
 				// If we have optional arguments from before, merge
 				$opt=(count($actionObj::$optionalArguments)>0) ? $actionObj::$optionalArguments : array();
 				$actionObj::$optionalArguments=array_merge(get_defined_vars($this),$opt);
-				
+				$this->optionalArguments=$actionObj::$optionalArguments;
+		
 				$returnObj = $actionObj->execute();
 
 				if($returnObj instanceof HttpMessage){
 					$this->currentHttp=$returnObj;
 				}
-				
+		
 				// return thyself!
 				return $this;
 			}catch(Exception $e){
 				echo 'error: '.$e->getMessage();
 			}
-		}	
+		}
 	}
 }
 
