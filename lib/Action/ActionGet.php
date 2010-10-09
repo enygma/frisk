@@ -29,14 +29,22 @@ class ActionGet extends Action
 	 */
 	public function execute()
 	{
-		$this->getHost 		= parent::$currentArguments[1];
-		$this->getLocation 	= 'http://'.$this->getHost.'/'.parent::$currentArguments[0];
-
-		parent::setParentArgument('getLocation',$this->getLocation);
+		$msgObj 	= &parent::getCurrentMessage();
+		$http 		= $msgObj::getData('currentHttp');
+		$arguments 	= $msgObj::getData('currentArguments');
+		
+		$this->getHost 		= $arguments[1];
+		$this->getLocation 	= 'http://'.$this->getHost.'/'.$arguments[0];
+		
+		$msgObj=&parent::getCurrentMessage();
+		$msgObj::setData('getLocation',$this->getLocation);
+		$msgObj::setData('getHost',$this->getHost);
 		
 		$http = new HttpRequest($this->getLocation,HttpRequest::METH_GET);
 		try {
-			return $http->send();
+			$httpReturn = $http->send();
+			$msgObj::setData('currentHttp',$httpReturn);
+			return $httpReturn;
 		}catch(Exception $e){
 			throw new Exception(get_class().': '.$e->getMessage());
 		}

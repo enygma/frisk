@@ -35,22 +35,32 @@ class ActionPost extends Action
 	 */
 	public function execute()
 	{	
+		$msgObj 	= &parent::getCurrentMessage();
+		$http 		= $msgObj::getData('currentHttp');
+		$arguments 	= $msgObj::getData('currentArguments');
+		
 		// Be sure we at least have the location
-		if(!parent::$currentArguments[0] || gettype(parent::$currentArguments[0])!='string'){
+		if(!$arguments[0] || gettype($arguments[0])!='string'){
 			throw new Exception(get_class().' Invalid post location!');
 		}
-		if(!isset(parent::$currentArguments[1]) || gettype(parent::$currentArguments[0])!='string'){
+		if(!isset($arguments[1]) || gettype($arguments[0])!='string'){
 			throw new Exception('Action Post: Invalid hostname!');
 		}
-		$this->postHost		= parent::$currentArguments[1];
-		$this->postLocation	= 'http://'.$this->postHost.parent::$currentArguments[0];
-		$this->postData		= (isset(parent::$currentArguments[2])) ? parent::$currentArguments[2] : '';
+		$this->postHost		= $arguments[1];
+		$this->postLocation	= 'http://'.$this->postHost.$arguments[0];
+		$this->postData		= (isset($arguments[2])) ? $arguments[2] : '';
+		
+		$msgObj=&parent::getCurrentMessage();
+		$msgObj::setData('postLocation',$this->postLocation);
+		$msgObj::setData('postHost',$this->postHost);
 		
 		$http = new HttpRequest($this->postLocation,HttpRequest::METH_POST);
 		$http->setPostFields($this->postData);
 		
 		try {
-			return $http->send();
+			$httpReturn = $http->send();
+			$msgObj::setData('currentHttp',$httpReturn);
+			return $httpReturn;
 		}catch(HttpException $e){
 			throw new Exception(get_class().' '.$e->getMessage());
 		}

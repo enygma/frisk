@@ -15,6 +15,8 @@ abstract class Action
 	static $currentHttp 		= null;
 	static $optionalArguments	= null;
 	
+	static $currentMessage		= null;
+	
 	/** 
 	* Create the object and set the base variables
 	*
@@ -35,6 +37,15 @@ abstract class Action
 	public function setParentArgument($key,$value)
 	{
 		self::$optionalArguments[$key]=$value;
+	}
+	
+	public static function setCurrentMessage(&$msgObj)
+	{
+		self::$currentMessage=$msgObj;
+	}
+	public static function getCurrentMessage()
+	{
+		return self::$currentMessage;
 	}
 
 }

@@ -7,8 +7,11 @@ class ActionSetfield extends Action
 		
 		// look at the page and be sure there's a form value named
 		// with the parameter(s)
+		$msgObj 	= &parent::getCurrentMessage();
+		$http 		= $msgObj::getData('currentHttp');
+		$arguments 	= $msgObj::getData('currentArguments');
 		
-		$httpBody = parent::$currentHttp->getBody();
+		$httpBody = $http->getBody();
 
 		$parameters=array('httpBody'=>$httpBody);
 
