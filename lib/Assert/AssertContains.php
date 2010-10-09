@@ -30,17 +30,24 @@ class AssertContains extends Assert
 				default:
 					$methodName='matchDirect';
 			}
-		}
+		}else{ $methodName='matchDirect'; }
+		
 		$this->$methodName($matchAgainst,$toFind);
 		return true;
 	}
 	private function matchDirect($matchValue1,$matchValue2){
-		if(!stristr($matchAgainst,$toFind)){
+		if(!stristr($matchValue1,$matchValue2)){
                         throw new Exception(get_class().': Term not found');
                 }
 	}
-	private function matchXpath($xpathExpression,$matchValue){
-		throw new Exception('XPath search not yet enabled');
+	private function matchXpath($matchValue,$xpathExpression){
+		//throw new Exception('XPath search not yet enabled');
+		$xml		= HelperForm::parseHtml($matchValue);
+		$matches	= $xml->xpath($xpathExpression);
+		
+		if(count($matches)<=0){
+			throw new Exception(get_class().': Pattern not matched');
+		}
 	}
 }
 
