@@ -25,6 +25,8 @@ abstract class Assert
 	*/
 	static $currentHttp 		= null;
 	
+	static $currentMessage		= null;
+	
 	/**
 	* Create the Assert object and set some based variables
 	*
@@ -34,6 +36,14 @@ abstract class Assert
 	{
 		self::$currentArguments	= $args;
 		self::$currentHttp 	= $http;
+	}
+	public static function setCurrentMessage(&$msgObj)
+	{
+		self::$currentMessage=$msgObj;
+	}
+	public static function getCurrentMessage()
+	{
+		return self::$currentMessage;
 	}
 }
 

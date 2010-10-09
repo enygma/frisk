@@ -21,8 +21,12 @@ class AssertCookieIsSet extends Assert
 	 */
 	public function assertExecute()
 	{
-		$httpHeaders	= parent::$currentHttp->getHeaders();
-		$httpCookieName = parent::$currentArguments[0];
+		$msgObj 	= &parent::getCurrentMessage();
+		$http 		= $msgObj::getData('currentHttp');
+		$arguments 	= $msgObj::getData('currentArguments');
+		
+		$httpHeaders	= $http->getHeaders();
+		$httpCookieName = $arguments[0];
 		$httpCookies	= $httpHeaders['Set-Cookie'];
 		
 		if(count(array_walk($httpCookies,function(&$value,$key,$cookieName){

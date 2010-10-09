@@ -20,8 +20,12 @@ class AssertResponseCode extends Assert
 	 */
 	public function assertExecute()
 	{
-		$httpCode 		= parent::$currentArguments[0];
-		$httpResponse 	= parent::$currentHttp->getResponseCode();
+		$msgObj 	= &parent::getCurrentMessage();
+		$http 		= $msgObj::getData('currentHttp');
+		$arguments 	= $msgObj::getData('currentArguments');
+		
+		$httpCode 		= $arguments[0];
+		$httpResponse 	= $http->getResponseCode();
 		
 		if($httpCode!=$httpResponse){
 			throw new Exception(get_class().': No match on HTTP response code ('.$httpCode.')!');

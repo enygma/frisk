@@ -18,13 +18,16 @@ class AssertEquals extends Assert
 	 */
 	public function assertExecute()
 	{	
-		$compareTo 		= parent::$currentArguments[0];
+		$msgObj 	= &parent::getCurrentMessage();
+		$http 		= $msgObj::getData('currentHttp');
+		$arguments 	= $msgObj::getData('currentArguments');
+		$compareTo	= $arguments[0];
 		
-		if(!isset(parent::$currentArguments[1])){
+		if(!isset($arguments[1])){
 			// If we're not given two terms, match against the body of the latest httpRequest
-			$compareAgainst = parent::$currentHttp->getBody();
+			$compareAgainst = $http->getBody();
 		}else{
-			$compareAgainst = parent::$currentArguments[1];
+			$compareAgainst = $arguments[1];
 		}
 		
 		if(trim($compareAgainst)!=trim($compareTo)){

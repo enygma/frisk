@@ -19,11 +19,15 @@ class AssertContains extends Assert
 	 */
 	public function assertExecute()
 	{	
-		$matchAgainst 	= parent::$currentHttp->getBody();
-		$toFind 	= parent::$currentArguments[0];
+		$msgObj 	= &parent::getCurrentMessage();
+		$http 		= $msgObj::getData('currentHttp');	
+		$arguments 	= $msgObj::getData('currentArguments');
+		
+		$matchAgainst	= $http->getBody();
+		$toFind 		= $arguments[0];
 
-		if(isset(parent::$currentArguments[1])){
-			switch(parent::$currentArguments[1]){
+		if(isset($arguments[1])){
+			switch($arguments[1]){
 				case TEST::TYPE_XPATH :
 					$methodName='matchXpath';
 					break;
@@ -31,14 +35,18 @@ class AssertContains extends Assert
 					$methodName='matchDirect';
 			}
 		}else{ $methodName='matchDirect'; }
-		
-		$this->$methodName($matchAgainst,$toFind);
+
+		try {
+			$this->$methodName($matchAgainst,$toFind);
+		}catch(Exception $e){
+			throw new Exception($e->getMessage());
+		}
 		return true;
 	}
 	private function matchDirect($matchValue1,$matchValue2){
 		if(!stristr($matchValue1,$matchValue2)){
-                        throw new Exception(get_class().': Term not found');
-                }
+			throw new Exception(get_class().': Term not found');
+		}
 	}
 	private function matchXpath($matchValue,$xpathExpression){
 		//throw new Exception('XPath search not yet enabled');
