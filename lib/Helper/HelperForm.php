@@ -20,14 +20,14 @@ class HelperForm extends Helper
 	public function execute($arguments){
 		
 		$htmlToParse 	= $arguments['httpBody'];
-		
-		//echo $htmlToParse;
-
+		self::$parsedHTML=self::parseHtml($htmlToParse);
+	}
+	
+	public static function parseHtml($htmlToParse){
 		$parsedToDom = new DOMDocument();
 		@$parsedToDom->loadHTML($htmlToParse);
 
-		$xml=simplexml_import_dom($parsedToDom);
-		self::$parsedHTML=$xml;
+		return simplexml_import_dom($parsedToDom);
 	}
 
 	/**
