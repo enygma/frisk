@@ -22,11 +22,8 @@ class AssertRequestparameter extends Assert
 		$msgObj 	= &parent::getCurrentMessage();
 		$http 		= $msgObj::getData('currentHttp');
 		$arguments 	= $msgObj::getData('currentArguments');
-		
-		//var_dump($this->optionalArguments);
-		
-		$urlParts = parse_url($this->optionalArguments['arg'][0]);
-		var_dump($urlParts);
+	
+		throw new Exception(get_class().': Assertion Incomplete');
 		
 		return true;
 	}

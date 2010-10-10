@@ -6,8 +6,6 @@ class Test
 	 * Store the test status
 	 */
 	public $testStatus 	= array();
-	public $optionalArguments;
-	private $currentHttp 	= null;
 	static $currentMessage = null;
 
 	const TYPE_XPATH 	= 1;
@@ -46,9 +44,7 @@ class Test
 
 			$assertName = 'Assert'.ucwords(strtolower($match[1]));
 			try{
-				$obj = new $assertName($this->currentHttp,$arg);	
-				$obj->optionalArguments=$this->optionalArguments;
-				
+				$obj = new $assertName(null,$arg);
 				$obj::setCurrentMessage($currentMessage);
 				
 				$obj->assertSetup();
@@ -66,26 +62,16 @@ class Test
 			}
 			return $this;
 		}elseif(stristr($name,'marktest')){
+			// catch our "marktestskipped" etc...
 			preg_match('/marktest(.*)?/i',$name,$match);
 			$this->testStatus[$testName]=array(null,ucwords($match[1].': '.$arg[0]));
 		}else{
 			// assume it's an action
 			$actionName='Action'.ucwords(strtolower($name));
 			try {
-				$actionObj = new $actionName($this->currentHttp,$arg);
-		
+				$actionObj = new $actionName(null,$arg);
 				$actionObj::setCurrentMessage($currentMessage);
-
-				// If we have optional arguments from before, merge
-				$opt=(count($actionObj::$optionalArguments)>0) ? $actionObj::$optionalArguments : array();
-				$actionObj::$optionalArguments=array_merge(get_defined_vars($this),$opt);
-				$this->optionalArguments=$actionObj::$optionalArguments;
-		
 				$returnObj = $actionObj->execute();
-
-				if($returnObj instanceof HttpMessage){
-					$this->currentHttp=$returnObj;
-				}
 		
 				// return thyself!
 				return $this;

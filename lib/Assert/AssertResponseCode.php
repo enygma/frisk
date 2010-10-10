@@ -2,7 +2,7 @@
 /**
  * Assertion Class - Check to see if the response code matches the input
  *
- * @authro Chris Cornutt <ccornutt@phpdeveloper.org>
+ * @author Chris Cornutt <ccornutt@phpdeveloper.org>
  * @package Frisk
  *
  */
