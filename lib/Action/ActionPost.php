@@ -57,6 +57,10 @@ class ActionPost extends Action
 		$http = new HttpRequest($this->postLocation,HttpRequest::METH_POST);
 		$http->setPostFields($this->postData);
 		
+		if($additionalHeaders=$msgObj::getData('httpHeaders')){
+			$http->setHeaders($additionalHeaders['httpHeaders']);
+		}
+		
 		try {
 			$httpReturn = $http->send();
 			$msgObj::setData('currentHttp',$httpReturn);

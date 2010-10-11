@@ -41,6 +41,11 @@ class ActionGet extends Action
 		$msgObj::setData('getHost',$this->getHost);
 		
 		$http = new HttpRequest($this->getLocation,HttpRequest::METH_GET);
+		
+		if($additionalHeaders=$msgObj::getData('httpHeaders')){
+			$http->setHeaders($additionalHeaders['httpHeaders']);
+		}
+		
 		try {
 			$httpReturn = $http->send();
 			$msgObj::setData('currentHttp',$httpReturn);
