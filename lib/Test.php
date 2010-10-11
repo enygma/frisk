@@ -52,19 +52,19 @@ class Test
 				$obj->assertTeardown();
 				
 				// pass!
-				$this->testStatus[$testName]=array('pass','');
+				$this->testStatus[$testName][$assertName]=array('pass','');
 			}catch(Exception $e){
-				$this->testStatus[$testName]=array('fail',$e->getMessage());
+				$this->testStatus[$testName][$assertName]=array('fail',$e->getMessage());
 			}
 			// If we're negating, set the flag back over
 			if($negate){
-				$this->testStatus[$testName][0]=($this->testStatus[$testName][0]=='pass') ? 'fail' : 'pass';
+				$this->testStatus[$testName][$assertName][0]=($this->testStatus[$testName][$assertName][0]=='pass') ? 'fail' : 'pass';
 			}
 			return $this;
 		}elseif(stristr($name,'marktest')){
 			// catch our "marktestskipped" etc...
 			preg_match('/marktest(.*)?/i',$name,$match);
-			$this->testStatus[$testName]=array(null,ucwords($match[1].': '.$arg[0]));
+			$this->testStatus[$testName][$name]=array(null,ucwords($match[1].': '.$arg[0]));
 		}else{
 			// assume it's an action
 			$actionName='Action'.ucwords(strtolower($name));
@@ -72,12 +72,14 @@ class Test
 				$actionObj = new $actionName(null,$arg);
 				$actionObj::setCurrentMessage($currentMessage);
 				$returnObj = $actionObj->execute();
-		
-				// return thyself!
-				return $this;
+
+				$this->testStatus[$testName][$actionName]=array('pass','');
 			}catch(Exception $e){
-				echo 'error: '.$e->getMessage();
+				//echo 'ERROR on '.$actionName.': '.$e->getMessage();
+				$this->testStatus[$testName][$actionName]=array('fail',$e->getMessage());
 			}
+			// return thyself!
+			return $this;
 		}
 	}
 }
