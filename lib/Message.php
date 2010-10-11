@@ -21,10 +21,17 @@ class Message
 	{
 		return self::$currentTestMethod;
 	}
-	public static function setData($key,$value)
+	public static function setData($key,$value,$overwrite=true)
 	{
 		$methodName=self::getCurrentTest();
-		self::$messageData[$methodName][$key]=$value;
+		if($overwrite){
+			self::$messageData[$methodName][$key]=$value;
+		}else{
+			// get the current value and append...
+			$currentData=self::getData($key);
+			$currentData[$key]=$value;
+			self::$messageData[$methodName][$key]=$currentData;
+		}
 	}
 	public static function getData($key)
 	{
