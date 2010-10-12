@@ -12,6 +12,9 @@ class ActionFindHtml extends Action
 		try {
 			HelperFindHtml::execute($http->getBody());
 			$found=HelperFindHtml::find($arguments[0],$arguments[1]);
+			if($found){
+				$msgObj::setData('matchAgainst',$found);
+			}
 		}catch(Exception $e){
 			throw new Exception($e->getMessage());
 		}

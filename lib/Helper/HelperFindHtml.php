@@ -36,6 +36,9 @@ class HelperFindHtml extends Helper
 		if(count($foundTag)>1){
 			throw new Exception('More than one match! Not allowed!');
 		}
+
+		// we've found our single object - set the match HTML
+		return (isset($foundTag[0])) ? $foundTag[0]->asXML() : null;
 	}
 }
 
