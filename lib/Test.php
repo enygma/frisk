@@ -31,7 +31,7 @@ class Test
 		$path = __DIR__.'/'.((stristr($name,'assert')) ? 'lib/Assert' : 'lib/Action');
 		$currentMessage=&self::getCurrentMessage();
 		$currentMessage::setData('currentArguments',$arg);
-		
+
 		if(stristr($name,'assert')){
 			// it's an assertion!
 			preg_match('/assert(.*)?/i',$name,$match);
