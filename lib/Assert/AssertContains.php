@@ -22,9 +22,10 @@ class AssertContains extends Assert
 		$msgObj 	= &parent::getCurrentMessage();
 		$http 		= $msgObj::getData('currentHttp');	
 		$arguments 	= $msgObj::getData('currentArguments');
+		$matchAgainst	= $msgObj::getData('matchAgainst');
 		
-		$matchAgainst	= $http->getBody();
-		$toFind 		= $arguments[0];
+		$matchAgainst	= ($matchAgainst!=null) ? $matchAgainst : $http->getBody();
+		$toFind 	= $arguments[0];
 
 		if(isset($arguments[1])){
 			switch($arguments[1]){
