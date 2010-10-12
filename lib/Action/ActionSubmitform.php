@@ -27,7 +27,7 @@ class ActionSubmitform extends Action
 		HelperForm::execute($parameters);
 
 		$httpRequest 	= $http;
-		$urlParts 		= parse_url($msgObj::getData('getLocation'));
+		$urlParts 	= parse_url($msgObj::getData('getLocation'));
 
 		// Ensure that there's fields for the values we want to post
 		foreach($arguments[0] as $fieldName=>$fieldValue){
