@@ -48,6 +48,8 @@ class ActionGet extends Action
 		
 		try {
 			$httpReturn = $http->send();
+			HelperSession::execute($httpReturn->getHeaders());
+
 			$msgObj::setData('currentHttp',$httpReturn);
 			return $httpReturn;
 		}catch(Exception $e){
