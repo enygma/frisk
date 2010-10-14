@@ -5,7 +5,8 @@
  * @author Chris Cornutt <ccornutt@phpdeveloper.org>
  * @package Frisk
  */
-class HelperSession extends Helper {
+class HelperSession extends Helper
+{
 
 	static $currentSessionId = null;
 
@@ -15,7 +16,8 @@ class HelperSession extends Helper {
 	 *
 	 * @param array $httpHeaders HTTP headers from a HttpResponse
 	 */
-	public function execute($httpHeaders){
+	public function execute($httpHeaders)
+	{
 		foreach($httpHeaders as $headerKey => $headerValue){
 			if($headerKey=='Set-Cookie' && strpos($headerValue,'PHPSESSID')!==false){
 				$cookieParts=explode(';',str_replace('PHPSESSID=','',$headerValue));
@@ -30,7 +32,8 @@ class HelperSession extends Helper {
 	 * @param string $sessionId PHP Session ID
 	 * @return null
 	 */
-	public static function startSession($sessionId){
+	public static function startSession($sessionId)
+	{
 		self::$currentSessionId = $sessionId;
 	}
 
@@ -39,7 +42,8 @@ class HelperSession extends Helper {
 	 *
 	 * @return string/null
 	 */
-	public static function getCurrentSession(){
+	public static function getCurrentSession()
+	{
 		return self::$currentSessionId;	
 	
 	}
@@ -49,7 +53,8 @@ class HelperSession extends Helper {
 	 *
 	 * @return void
 	 */
-	public static function endSession(){
+	public static function endSession()
+	{
 		self::$currentSessionId - null;
 	}
 
