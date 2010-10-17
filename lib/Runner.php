@@ -8,7 +8,7 @@ class Runner
 	public $testResults = array();
 	
 	public function __construct(){
-		$this->testsDir=__DIR__.'/../tests';
+ 		$this->testsDir = HelperConfig::getConfigValue('tests_directory');
 	}
 	
 	public function execute($tests=null)

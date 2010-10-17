@@ -28,9 +28,10 @@ echo "Start!\n\n";
 $runner = new Runner();
 try{
 	HelperArguments::execute($_SERVER['argv']);
+	HelperConfig::execute(null);
 	$runner->execute();
 	echo "=====================\n";
-	echo 'ending status: '; print_r($runner->testResults);
+	//echo 'ending status: '; print_r($runner->testResults);
 }catch(Exception $e){
 	echo $e->getMessage();
 }

@@ -9,17 +9,33 @@ class HelperConfig extends Helper
 {
 	/**
 	 * Current configuration container
+	 * Sets up some defaults
 	 */
-	static $currentConfig	= array();
+	static $currentConfig	= array(
+		'tests_directory' => './tests'
+	);
 	
-	public function execute()
+	public function execute($optionalConfig)
 	{
 		// if the "config" value of the arguments is set, look for that file....
-		if($configFile=HelperArguments::get('config')){
+		if($configFile=HelperArguments::getArgument('config')){
+			self::loadConfig($configFile);
+		}
+	}
+	
+	private function loadConfig($configFilePath)
+	{
+		if(is_file($configFilePath)){
+			$configSettings = parse_ini_file($configFilePath,true);
 			
+			foreach($configSettings as $sectionName => $sectionValue){
+				foreach($sectionValue as $settingName => $settingValue){
+					$configName = $sectionName.'_'.$settingName;
+					HelperConfig::setConfigValue($configName,$settingValue);
+				}
+			}
 		}else{
-			// load in default settings
-			
+			throw new Exception(get_class().': Config file not found!');
 		}
 	}
 	

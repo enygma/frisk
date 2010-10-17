@@ -67,7 +67,7 @@ class HelperArguments extends Helper
 	 */
 	public static function getArgument($name)
 	{
-		return (isset(self::$currentArguments)) ? self::$currentArguments : null;
+		return (isset(self::$currentArguments[$name])) ? self::$currentArguments[$name] : null;
 	}
 
 }
