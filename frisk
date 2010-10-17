@@ -14,7 +14,7 @@
 *
 * Autoloader points to the lib/asserts directory for handling assertion calls 
 */
-function __autoload($class){ include_once $class.'.php'; }
+function __autoload($class){  include_once $class.'.php'; }
 
 set_include_path(get_include_path().
 	PATH_SEPARATOR.__DIR__.'/lib'.
@@ -27,9 +27,10 @@ echo "Start!\n\n";
 
 $runner = new Runner();
 try{
+	HelperArguments::execute($_SERVER['argv']);
 	$runner->execute();
 	echo "=====================\n";
-	//echo 'ending status: '; print_r($runner->testResults);
+	echo 'ending status: '; print_r($runner->testResults);
 }catch(Exception $e){
 	echo $e->getMessage();
 }

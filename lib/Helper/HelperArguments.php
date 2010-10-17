@@ -20,8 +20,10 @@ class HelperArguments extends Helper
 		if(!empty($arguments)){
 			foreach($arguments as $argument){
 				$argumentParts	= explode('=',$argument);
-				$argumentKey	= str_replace('--','',$argumentParts[0]);
-				self::currentArguments[$argumentKey]=$argumentParts[1];
+				if(count($argumentParts)>1){
+					$argumentKey	= str_replace('--','',$argumentParts[0]);
+					self::$currentArguments[$argumentKey]=$argumentParts[1];
+				}
 			}
 		}
 	}
