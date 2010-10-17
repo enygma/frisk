@@ -23,18 +23,25 @@ set_include_path(get_include_path().
 	PATH_SEPARATOR.__DIR__.'/lib/Helper'.
 	PATH_SEPARATOR.__DIR__.'/tests');
 
-echo "Start!\n\n";
-
 $runner = new Runner();
 try{
 	HelperArguments::execute($_SERVER['argv']);
 	HelperConfig::execute(null);
+	
+	ob_start();
+	
+	echo "Start!\n\n";
 	$runner->execute();
 	echo "=====================\n";
-	//echo 'ending status: '; print_r($runner->testResults);
+	echo 'ending status: '; print_r($runner->testResults);	
+	echo "\n\n";
+	
+	$executionOutput=ob_get_clean();
+	
+	if(HelperArguments::getArgument('quiet')==null){
+		echo $executionOutput;
+	}
 }catch(Exception $e){
 	echo $e->getMessage();
 }
-
-echo "\n\n";
 ?>
