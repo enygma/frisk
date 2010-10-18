@@ -38,7 +38,7 @@ class ActionPost extends Action
 		$msgObj 	= &parent::getCurrentMessage();
 		$http 		= $msgObj::getData('currentHttp');
 		$arguments 	= $msgObj::getData('currentArguments');
-		
+
 		// Be sure we at least have the location
 		if(!$arguments[0] || gettype($arguments[0])!='string'){
 			throw new Exception(get_class().' Invalid post location!');
@@ -55,7 +55,11 @@ class ActionPost extends Action
 		$msgObj::setData('postHost',$this->postHost);
 		
 		$http = new HttpRequest($this->postLocation,HttpRequest::METH_POST);
-		$http->setPostFields($this->postData);
+		if(is_array($this->postData)){
+			$http->setPostFields($this->postData);
+		}else{
+			$http->setBody($this->postData);
+		}
 		
 		if($additionalHeaders=$msgObj::getData('httpHeaders')){
 			$http->setHeaders($additionalHeaders['httpHeaders']);
