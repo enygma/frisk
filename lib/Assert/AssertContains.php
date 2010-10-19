@@ -23,22 +23,34 @@ class AssertContains extends Assert
 		$http 		= $msgObj::getData('currentHttp');	
 		$arguments 	= $msgObj::getData('currentArguments');
 		$matchAgainst	= $msgObj::getData('matchAgainst');
+		$outputFormat	= $msgObj::getData('outputFormat');
 		
 		$matchAgainst	= ($matchAgainst!=null) ? $matchAgainst : $http->getBody();
 		$toFind 	= $arguments[0];
 
-		if(isset($arguments[1])){
-			switch($arguments[1]){
-				case TEST::TYPE_XPATH :
-					$methodName='matchXpath';
+		// mutiple inut formats (json, txt, xml)
+		try {
+			switch(strtolower($outputFormat)){
+				case 'json': 
+					// use the json searching with a FilterIterator
+					$this->matchJsonFilter($toFind,$matchAgainst);
+					break;
+				case 'xml': 
+					// use the xml searching
 					break;
 				default:
-					$methodName='matchDirect';
+					// treat is as plain text
+					if(isset($arguments[1])){
+						switch($arguments[1]){
+						case TEST::TYPE_XPATH :
+							$methodName='matchXpath';
+							break;
+						default:
+							$methodName='matchDirect';
+						}
+					}else{ $methodName='matchDirect'; }
+					$this->$methodName($matchAgainst,$toFind);
 			}
-		}else{ $methodName='matchDirect'; }
-
-		try {
-			$this->$methodName($matchAgainst,$toFind);
 		}catch(Exception $e){
 			throw new Exception($e->getMessage());
 		}
@@ -56,6 +68,21 @@ class AssertContains extends Assert
 		
 		if(count($matches)<=0){
 			throw new Exception(get_class().': Pattern not matched');
+		}
+	}
+	private function matchJsonFilter($toFind,$jsonMessage)
+	{
+		// Use our FilterIterator
+		$found = false;
+		$jsonMessage = json_decode($jsonMessage);
+		$filterResult = new FilterJsonFind(
+			new RecursiveIteratorIterator(new RecursiveArrayIterator($jsonMessage))
+		);
+		foreach($filterResult as $resultKey => $resultValue){
+			if($resultValue==$toFind){ $found = true; }
+		}
+		if(!$found){
+			throw new Exception(get_class().': Term not found in object');
 		}
 	}
 }
