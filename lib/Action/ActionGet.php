@@ -39,6 +39,7 @@ class ActionGet extends Action
 		$msgObj=&parent::getCurrentMessage();
 		$msgObj::setData('getLocation',$this->getLocation);
 		$msgObj::setData('getHost',$this->getHost);
+		$msgObj::setData('outputFormat',(isset($arguments[2])) ? $arguments[2] : 'txt');
 		
 		$http = new HttpRequest($this->getLocation,HttpRequest::METH_GET);
 		

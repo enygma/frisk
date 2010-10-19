@@ -53,6 +53,7 @@ class ActionPost extends Action
 		$msgObj=&parent::getCurrentMessage();
 		$msgObj::setData('postLocation',$this->postLocation);
 		$msgObj::setData('postHost',$this->postHost);
+		$msgObj::setData('outputFormat',(isset($arguments[3])) ? $arguments[3] : 'txt');
 		
 		$http = new HttpRequest($this->postLocation,HttpRequest::METH_POST);
 		if(is_array($this->postData)){
