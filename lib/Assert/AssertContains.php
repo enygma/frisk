@@ -75,7 +75,7 @@ class AssertContains extends Assert
 		// Use our FilterIterator
 		$found = false;
 		$jsonMessage = get_object_vars(json_decode($jsonMessage));
-		if ($jsonMessage !== null) {
+		if ($jsonMessage != null) {
 			$filterResult = new FilterJsonFind(
 				new RecursiveIteratorIterator(new RecursiveArrayIterator($jsonMessage))
 			);
