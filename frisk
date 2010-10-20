@@ -30,13 +30,23 @@ try{
 	HelperConfig::execute(null);
 	
 	ob_start();
-	
-	echo "Start!\n\n";
 	$runner->execute();
-	echo "=====================\n";
-	echo 'ending status: '; print_r($runner->testResults);	
-	echo "\n\n";
-	
+
+	if($outputType=HelperArguments::getArgument('output')){
+		// we have another output type, load our helper
+		if(HelperOutput::allowedFormat($outputType)){ 
+			echo HelperOutput::output($runner->testResults,$outputType);
+
+		}else{ die("ERROR: Invalid output format (".$outputType.")!\n\n"); }
+		
+	}else{
+		// just echo!
+		echo "Start!\n\n";
+		echo "=====================\n";
+		echo 'ending status: '; print_r($runner->testResults);	
+		echo "\n\n";
+	}	
+
 	$executionOutput=ob_get_clean();
 	
 	if(HelperArguments::getArgument('quiet')==null){
