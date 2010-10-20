@@ -20,6 +20,7 @@ class HelperOutput extends Helper
 
 	/**
 	 * Check to see if the output format has a method to handle it
+	 * Reflect on this class to get the methods...
 	 *
 	 * @param string $outputFormat Output format type (xml, csv, etc)
 	 */
@@ -67,9 +68,26 @@ class HelperOutput extends Helper
 	 */
 	public static function asCsv($outputData)
 	{
-		$csvLines = array();
-		
-		return implode("\n",$csvLines);
+
+		// loop through the array levels and built strings
+		$allLines=array();
+		foreach($outputData as $testKey => $test){
+			$testClass = $testKey;
+			foreach($test as $methodKey => $method){
+				$testLines=array();
+				$testMethod = $methodKey;
+				foreach($method as $actionKey => $action){
+					$testLines['class'] = $testClass;
+					$testLines['method'] =$testMethod;
+					$testLines['actionType'] = $actionKey;
+					$testLines['status'] = $action[0];
+					$testLines['message']= $action[1];
+					
+					$allLines[]='"'.implode('","',$testLines).'"';
+				}
+			}
+		}
+		return implode("\n",$allLines);
 	}
 	
 	/**
