@@ -74,12 +74,14 @@ class AssertContains extends Assert
 	{
 		// Use our FilterIterator
 		$found = false;
-		$jsonMessage = json_decode($jsonMessage);
-		$filterResult = new FilterJsonFind(
-			new RecursiveIteratorIterator(new RecursiveArrayIterator($jsonMessage))
-		);
-		foreach($filterResult as $resultKey => $resultValue){
-			if($resultValue==$toFind){ $found = true; }
+		$jsonMessage = get_object_vars(json_decode($jsonMessage));
+		if ($jsonMessage !== null) {
+			$filterResult = new FilterJsonFind(
+				new RecursiveIteratorIterator(new RecursiveArrayIterator($jsonMessage))
+			);
+			foreach($filterResult as $resultKey => $resultValue){
+				if($resultValue==$toFind){ $found = true; }
+			}			
 		}
 		if(!$found){
 			throw new Exception(get_class().': Term not found in object');
