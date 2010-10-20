@@ -17,6 +17,36 @@ class HelperOutput extends Helper
 	{
 		
 	}
+
+	/**
+	 * Check to see if the output format has a method to handle it
+	 *
+	 * @param string $outputFormat Output format type (xml, csv, etc)
+	 */
+	public function allowedFormat($outputFormat)
+	{
+		$allowedFormat 	 = false;
+		$reflectionClass = new ReflectionClass('HelperOutput');
+		$classMethods 	 = $reflectionClass->getMethods();
+
+		$methodMatch = 'as'.ucwords(strtolower($outputFormat));
+		foreach($classMethods as $method){
+			if($method->name==$methodMatch){ $allowedFormat=true; }
+		}
+		return $allowedFormat;
+	}
+
+	/**
+	 * Abstraction method to get things to the right place
+	 *
+	 * @param array $executionData Results from test run
+	 * @param string $outputFormat Requested output format
+	 */
+	public function output($executionData,$outputFormat)
+	{
+		$methodName = 'as'.strtolower(ucwords($outputFormat));	
+		return self::$methodName($executionData);
+	}
 	
 	/**
 	 * Output the data array natively (default)
@@ -50,7 +80,7 @@ class HelperOutput extends Helper
 	 */
 	public static function asXml($outputData)
 	{
-		
+		return 'not implemented';
 	}
 	
 	/**
@@ -61,7 +91,7 @@ class HelperOutput extends Helper
 	 */
 	public static function asJson($outputData)
 	{
-		
+		return json_encode($outputData);	
 	}
 }
 
