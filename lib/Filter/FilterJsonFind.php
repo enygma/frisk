@@ -4,14 +4,12 @@ class FilterJsonFind extends FilterIterator {
 
 	public function __construct($iterator)
 	{
-		var_dump($iterator);
 		parent::__construct($iterator);
 	}
 
 	public function accept()
 	{
-		echo 'accept';
-		echo 'c:'.$this->getInnerIterator()->current();
+		// TODO: make it actually take in data heh
 		return ($this->current()=='data here');
 	}
 
