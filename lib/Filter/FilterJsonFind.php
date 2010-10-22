@@ -1,16 +1,19 @@
 <?php
 
-class FilterJsonFind extends FilterIterator {
+class FilterJsonFind extends FilterIterator 
+{
 
-	public function __construct($iterator)
+	private $searchTerm = null;
+
+	public function __construct($iterator,$searchTerm)
 	{
 		parent::__construct($iterator);
+		$this->searchTerm = $searchTerm;
 	}
 
 	public function accept()
 	{
-		// TODO: make it actually take in data heh
-		return ($this->current()=='data here');
+		return ($this->current()==$this->searchTerm);
 	}
 
 }
