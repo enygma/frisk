@@ -38,22 +38,39 @@ class ActionPost extends Action
 		$msgObj 	= &parent::getCurrentMessage();
 		$http 		= $msgObj::getData('currentHttp');
 		$arguments 	= $msgObj::getData('currentArguments');
+		$settings	= array();
+		
+		//if the first parameter is an array, they might be defining lots of things - parse!
+		if(is_array($arguments[0])){
+			// be sure that at least the location and host are set
+			if(!isset($arguments[0]['host']) || !isset($arguments[0]['location']) ){
+				throw new Exception('Missing required arguments!');
+			}
+			$settings = $arguments[0];
+		}else{
+			// if we're just using the normal arguments - map them
+			$settingKeys = array('location','host','postData','outputFormat');
+			foreach($arguments as $argumentIndex => $argument){
+				$argumentKey = $settingKeys[$argumentIndex];
+				$settings[$argumentKey]=($arguments[$argumentIndex]) ? $arguments[$argumentIndex] : null;
+			}
+		}
 
 		// Be sure we at least have the location
-		if(!$arguments[0] || gettype($arguments[0])!='string'){
+		if(!$settings['location'] || gettype($settings['location'])!='string'){
 			throw new Exception(get_class().' Invalid post location!');
 		}
-		if(!isset($arguments[1]) || gettype($arguments[0])!='string'){
+		if(!isset($settings['host']) || gettype($settings['host'])!='string'){
 			throw new Exception('Action Post: Invalid hostname!');
 		}
-		$this->postHost		= $arguments[1];
-		$this->postLocation	= 'http://'.$this->postHost.$arguments[0];
-		$this->postData		= (isset($arguments[2])) ? $arguments[2] : '';
+		$this->postHost		= $settings['host'];
+		$this->postLocation	= 'http://'.$this->postHost.$settings['location'];
+		$this->postData		= (isset($settings['postData'])) ? $settings['postData'] : '';
 		
 		$msgObj=&parent::getCurrentMessage();
 		$msgObj::setData('postLocation',$this->postLocation);
 		$msgObj::setData('postHost',$this->postHost);
-		$msgObj::setData('outputFormat',(isset($arguments[3])) ? $arguments[3] : 'txt');
+		$msgObj::setData('outputFormat',(isset($settings['outputFormat'])) ? $settings['outputFormat'] : 'txt');
 		
 		$http = new HttpRequest($this->postLocation,HttpRequest::METH_POST);
 		if(is_array($this->postData)){

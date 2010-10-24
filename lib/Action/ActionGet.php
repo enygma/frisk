@@ -33,13 +33,29 @@ class ActionGet extends Action
 		$http 		= $msgObj::getData('currentHttp');
 		$arguments 	= $msgObj::getData('currentArguments');
 		
-		$this->getHost 		= $arguments[1];
-		$this->getLocation 	= 'http://'.$this->getHost.'/'.$arguments[0];
+		//if the first parameter is an array, they might be defining lots of things - parse!
+		if(is_array($arguments[0])){
+			// be sure that at least the location and host are set
+			if(!isset($arguments[0]['host']) || !isset($arguments[0]['location']) ){
+				throw new Exception('Missing required arguments!');
+			}
+			$settings = $arguments[0];
+		}else{
+			// if we're just using the normal arguments - map them
+			$settingKeys = array('location','host','outputFormat');
+			foreach($arguments as $argumentIndex => $argument){
+				$argumentKey = $settingKeys[$argumentIndex];
+				$settings[$argumentKey]=($arguments[$argumentIndex]) ? $arguments[$argumentIndex] : null;
+			}
+		}
+		
+		$this->getHost 		= $settings['host'];
+		$this->getLocation 	= 'http://'.$this->getHost.'/'.$settings['location'];
 		
 		$msgObj=&parent::getCurrentMessage();
 		$msgObj::setData('getLocation',$this->getLocation);
 		$msgObj::setData('getHost',$this->getHost);
-		$msgObj::setData('outputFormat',(isset($arguments[2])) ? $arguments[2] : 'txt');
+		$msgObj::setData('outputFormat',(isset($settings['outputFormat'])) ? $settings['outputFormat'] : 'txt');
 		
 		$http = new HttpRequest($this->getLocation,HttpRequest::METH_GET);
 		
