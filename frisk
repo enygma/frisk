@@ -22,6 +22,7 @@ set_include_path(get_include_path().
 	PATH_SEPARATOR.__DIR__.'/lib/Assert'.
 	PATH_SEPARATOR.__DIR__.'/lib/Helper'.
 	PATH_SEPARATOR.__DIR__.'/lib/Filter'.
+	PATH_SEPARATOR.__DIR__.'/lib/Exceptions'.
 	PATH_SEPARATOR.__DIR__.'/tests');
 
 $runner = new Runner();
@@ -53,6 +54,6 @@ try{
 		echo $executionOutput;
 	}
 }catch(Exception $e){
-	echo $e->getMessage();
+	echo 'ERROR: '.$e->getMessage()."\n\n";
 }
 ?>
