@@ -13,7 +13,14 @@ class Runner
 	
 	public function execute($tests=null)
 	{	
-		$tests=$this->loadTests();
+		// check to see if they spcified one specific test
+		$singleTestName=HelperArguments::getArgument('test');
+		
+		$tests=$this->loadTests($singleTestName);
+		
+		if(empty($tests)){
+			throw new Exception('Invalid or no tests found!');
+		}
 		
 		foreach($tests as $test){
 			$testObj = new $test();
@@ -37,12 +44,18 @@ class Runner
 			}
 		}
 	}
-	public function loadTests(){
+	public function loadTests($singleTestName=null){
 		$testFiles=array();
 		$dir = new DirectoryIterator($this->testsDir);
 		foreach($dir as $file){
 			if(!$file->isDot() && strstr($file->getFilename(),'Test') && substr($file->getFilename(),-3)=='php'){
-				$testFiles[]=str_replace('.php','',$file->getFilename());
+				$testName=str_replace('.php','',$file->getFilename());
+				
+				if($singleTestName && $testName==$singleTestName){
+					$testFiles[]=$testName;
+				}elseif(!$singleTestName){
+					$testFiles[]=$testName;
+				}
 			}
 		}
 		return $testFiles;
