@@ -18,10 +18,11 @@ class AssertEquals extends Assert
 	 */
 	public function assertExecute()
 	{	
-		$msgObj 	= &parent::getCurrentMessage();
-		$http 		= $msgObj::getData('currentHttp');
-		$arguments 	= $msgObj::getData('currentArguments');
-		$compareTo	= $arguments[0];
+		$msgObj 		= &parent::getCurrentMessage();
+		$http 			= $msgObj::getData('currentHttp');
+		$arguments 		= $msgObj::getData('currentArguments');
+		$outputFormat	= $msgObj::getData('outputFormat');
+		$compareTo		= $arguments[0];
 		
 		if(!isset($arguments[1])){
 			// If we're not given two terms, match against the body of the latest httpRequest
@@ -29,8 +30,22 @@ class AssertEquals extends Assert
 		}else{
 			$compareAgainst = $arguments[1];
 		}
+
+		$passTest = true;
+		switch(strtolower($outputFormat)){
+			case 'json':
+				if(json_encode($compareTo)!=json_encode($compareAgainst)){
+					$passTest = false;
+				}
+				break;
+			default:
+				// match as strings
+				if(trim($compareAgainst)!=trim($compareTo)){
+					$passTest = false;
+				}
+		}
 		
-		if(trim($compareAgainst)!=trim($compareTo)){
+		if(!$passTest){
 			throw new Exception(get_class().': Values not equal!');
 		}
 		return true;
