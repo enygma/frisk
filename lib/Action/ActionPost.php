@@ -55,7 +55,7 @@ class ActionPost extends Action
 				$settings[$argumentKey]=($arguments[$argumentIndex]) ? $arguments[$argumentIndex] : null;
 			}
 		}
-
+		
 		// Be sure we at least have the location
 		if(!$settings['location'] || gettype($settings['location'])!='string'){
 			throw new Exception(get_class().' Invalid post location!');
@@ -77,6 +77,10 @@ class ActionPost extends Action
 			$http->setPostFields($this->postData);
 		}else{
 			$http->setBody($this->postData);
+		}
+		
+		if(isset($settings['headers']) && count($settings['headers'])>0){
+			$http->setHeaders($settings['headers']);
 		}
 		
 		if($additionalHeaders=$msgObj::getData('httpHeaders')){
