@@ -8,6 +8,23 @@
 class HelperArguments extends Helper
 {
 
+	/**
+	 * Details for current arguments (spit out on call to --help)
+	 * @var array
+	 */
+	static $argumentDetails = array(
+		'quiet'	  => array('','Suppresses all output, nothing returned'),
+		'output'  => array('[type]','Controls output format (ex. XML, JSON, CSV, etc)'),
+		'config'  => array('[file path]','Path to the configuration file to use'),
+		'test'	  => array('[test name]','Run a single test with this name'),
+		'verbose' => array('','Add more verbose reporting to testing output'),
+		'help'	  => array('','Display this message')
+	);
+
+	/**
+	 * Arguments currently defined on execution
+	 * @var array
+	 */
 	static $currentArguments = array();
 
 	/**
@@ -20,10 +37,9 @@ class HelperArguments extends Helper
 		if(!empty($arguments)){
 			foreach($arguments as $argument){
 				$argumentParts	= explode('=',$argument);
-				if(count($argumentParts)>1){
-					$argumentKey	= str_replace('--','',$argumentParts[0]);
-					self::$currentArguments[$argumentKey]=$argumentParts[1];
-				}
+				$argumentKey    = str_replace('--','',$argumentParts[0]);
+
+				self::$currentArguments[$argumentKey] = (count($argumentParts)>1) ? $argumentParts[1] : true;
 			}
 		}
 	}
@@ -70,6 +86,31 @@ class HelperArguments extends Helper
 		return (isset(self::$currentArguments[$name])) ? self::$currentArguments[$name] : null;
 	}
 
+	/**
+	 * Display the contents of the argument detail from above
+	 *
+	 * @return void
+	 */
+	public static function displayArgumentHelp()
+	{
+		echo "Frisk command-line parameters:\n";
+		echo "=======================================\n";
+
+		// find the longest argument info
+		$longestParameter = 0;
+		foreach(self::$argumentDetails as $argumentName => $argumentDetail){
+			$argumentString='--'.$argumentName.((!empty($argumentDetail[0])) ? ' = '.$argumentDetail[0] :  '');
+			if(strlen($argumentString)>$longestParameter){ $longestParameter=strlen($argumentString); }
+		}
+
+		foreach(self::$argumentDetails as $argumentName => $argumentDetail){
+			$argumentString="--".$argumentName.' ';
+			if(!empty($argumentDetail[0])){ $argumentString.='= '.$argumentDetail[0]; }
+
+			echo str_pad($argumentString,$longestParameter+3,' ').$argumentDetail[1]."\n";
+		}
+		echo "\n\n";
+	}
 }
 
 ?>

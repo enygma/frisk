@@ -31,9 +31,16 @@ set_include_path(get_include_path().
 	PATH_SEPARATOR.__DIR__.'/lib/Exceptions'.
 	PATH_SEPARATOR.__DIR__.'/tests');
 
+HelperArguments::execute($_SERVER['argv']);
+
+// See if they just need help
+if(HelperArguments::getArgument('help')){
+	HelperArguments::displayArgumentHelp();
+	die();
+}
+
 $runner = new Runner();
 try{
-	HelperArguments::execute($_SERVER['argv']);
 	HelperConfig::execute(null);
 	
 	ob_start();
