@@ -74,8 +74,14 @@ class Test
 				$returnObj = $actionObj->execute();
 
 				$this->testStatus[$testName][$actionName]=array('pass','');
+
+				if(HelperArguments::getArgument('verbose')){
+					array_push($this->testStatus[$testName][$actionName],
+						$currentMessage::getData('__lastRequest'),
+						$currentMessage::getData('__lastResponse')
+					);
+				};
 			}catch(Exception $e){
-				//echo 'ERROR on '.$actionName.': '.$e->getMessage();
 				$this->testStatus[$testName][$actionName]=array('fail',$e->getMessage());
 			}
 			// return thyself!

@@ -91,6 +91,9 @@ class ActionPost extends Action
 			$httpReturn = $http->send();
 			HelperSession::execute($httpReturn->getHeaders());
 
+			$msgObj::setData('__lastRequest',$http->getRawRequestMessage());
+                        $msgObj::setData('__lastResponse',$http->getRawResponseMessage());
+
 			$msgObj::setData('currentHttp',$httpReturn);
 			return $httpReturn;
 		}catch(HttpException $e){
