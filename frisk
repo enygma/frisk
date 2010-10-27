@@ -14,6 +14,12 @@
 *
 * Autoloader points to the lib/asserts directory for handling assertion calls 
 */
+
+// Before we do anything, be sure the extension is loaded
+if(!extension_loaded('http')){
+	die("Needed extension not loaded! (pecl_http)\n\n");
+}
+
 function __autoload($class){  include_once $class.'.php'; }
 
 set_include_path(get_include_path().
