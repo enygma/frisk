@@ -25,11 +25,18 @@ class ActionClickLink extends Action
 
 		// now, find our link!
 		HelperFindHtml::execute($http->getBody());
-		preg_match('/href="(.*?)"/',HelperFindHtml::find('a',array('id'=>$arguments[0])),$match);
+		preg_match('/href="(.*?)"/',HelperFindHtml::findByTag('a',array('id'=>$arguments[0])),$match);
 
 		if(!isset($match[1])){
-			throw new Exception(get_class().': Link data not found!');
-		}else{ $linkLocation=$match[1]; }
+			// a link with the ID wasn't found - let's see if we can find it by the link contents
+			$xpathExpression = "//a[text()='".$arguments[0]."']/@href";
+			preg_match('/href="(.*?)"/',HelperFindHtml::findByExpression($xpathExpression),$match);
+			if(!isset($match[1])){
+				throw new Exception(get_class().': Link data not found!');
+			}else{
+				$linkLocation = $match[1];
+			}
+		}else{ $linkLocation = $match[1]; }
 
 		$url		= parse_url($linkLocation);
 		$hostname 	= (isset($url['host'])) ? $url['host'] : $hostname;

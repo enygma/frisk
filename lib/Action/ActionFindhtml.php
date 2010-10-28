@@ -11,7 +11,7 @@ class ActionFindHtml extends Action
 
 		try {
 			HelperFindHtml::execute($http->getBody());
-			$found=HelperFindHtml::find($arguments[0],$arguments[1]);
+			$found=HelperFindHtml::findByTag($arguments[0],$arguments[1]);
 			if($found){
 				$msgObj::setData('matchAgainst',$found);
 			}

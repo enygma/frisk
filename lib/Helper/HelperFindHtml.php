@@ -21,7 +21,7 @@ class HelperFindHtml extends Helper
 	 * We only want to find one unique one right now
 	 *
 	 */
-	public function find($htmlTag,$htmlOptions)
+	public function findByTag($htmlTag,$htmlOptions)
 	{
 		$expression='//*[';
 		$expressionList=array();
@@ -36,6 +36,14 @@ class HelperFindHtml extends Helper
 		if(count($foundTag)>1){
 			throw new Exception('More than one match! Not allowed!');
 		}
+
+		// we've found our single object - set the match HTML
+		return (isset($foundTag[0])) ? $foundTag[0]->asXML() : null;
+	}
+	
+	public function findByExpression($xpathExpression)
+	{		
+		$foundTag = self::$parsedHtml->xpath($xpathExpression);
 
 		// we've found our single object - set the match HTML
 		return (isset($foundTag[0])) ? $foundTag[0]->asXML() : null;
