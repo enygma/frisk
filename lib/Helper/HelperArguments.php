@@ -13,12 +13,13 @@ class HelperArguments extends Helper
 	 * @var array
 	 */
 	static $argumentDetails = array(
-		'quiet'	  => array('','Suppresses all output, nothing returned'),
-		'output'  => array('[type]','Controls output format (ex. XML, JSON, CSV, etc)'),
-		'config'  => array('[file path]','Path to the configuration file to use'),
-		'test'	  => array('[test name]','Run a single test with this name'),
-		'verbose' => array('','Add more verbose reporting to testing output'),
-		'help'	  => array('','Display this message')
+		'quiet'	  	=> array('','Suppresses all output, nothing returned'),
+		'output'  	=> array('[type]','Controls output format (ex. XML, JSON, CSV, etc)'),
+		'config'  	=> array('[file path]','Path to the configuration file to use'),
+		'test'	  	=> array('[test name]','Run a single test with this name'),
+		'verbose' 	=> array('','Add more verbose reporting to testing output'),
+		'tests-dir' 	=> array('[path]','Definite the directory to pull tests from'),
+		'help'	  	=> array('','Display this message')
 	);
 
 	/**
