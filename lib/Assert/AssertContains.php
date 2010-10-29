@@ -25,7 +25,7 @@ class AssertContains extends Assert
 		$matchAgainst	= $msgObj::getData('matchAgainst');
 		$outputFormat	= $msgObj::getData('outputFormat');
 		
-		$matchAgainst	= ($matchAgainst!=null) ? $matchAgainst : $http->getBody();
+		$matchAgainst	= ($matchAgainst!=null) ? $matchAgainst : (($http) ? $http->getBody() : '');
 		$toFind 	= $arguments[0];
 
 		// mutiple inut formats (json, txt, xml)

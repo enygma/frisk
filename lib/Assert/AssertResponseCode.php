@@ -25,7 +25,7 @@ class AssertResponseCode extends Assert
 		$arguments 	= $msgObj::getData('currentArguments');
 		
 		$httpCode 		= $arguments[0];
-		$httpResponse 	= $http->getResponseCode();
+		$httpResponse 	= ($http) ? $http->getResponseCode() : '0';
 		
 		if($httpCode!=$httpResponse){
 			throw new Exception(get_class().': No match on HTTP response code ('.$httpCode.')!');

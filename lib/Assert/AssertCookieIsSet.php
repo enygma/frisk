@@ -25,7 +25,7 @@ class AssertCookieIsSet extends Assert
 		$http 		= $msgObj::getData('currentHttp');
 		$arguments 	= $msgObj::getData('currentArguments');
 		
-		$httpHeaders	= $http->getHeaders();
+		$httpHeaders	= ($http) ? $http->getHeaders() : array();
 		$httpCookieName = $arguments[0];
 		$httpCookies	= $httpHeaders['Set-Cookie'];
 		

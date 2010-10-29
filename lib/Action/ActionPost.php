@@ -88,7 +88,12 @@ class ActionPost extends Action
 		}
 		
 		try {
-			$httpReturn = $http->send();
+			try {
+				$httpReturn = $http->send();
+			}catch(Exception $e){
+				throw new Exception($e->getMessage());
+				return false;
+			}
 			HelperSession::execute($httpReturn->getHeaders());
 
 			$msgObj::setData('__lastRequest',$http->getRawRequestMessage());

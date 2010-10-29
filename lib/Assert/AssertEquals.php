@@ -26,7 +26,7 @@ class AssertEquals extends Assert
 		
 		if(!isset($arguments[1])){
 			// If we're not given two terms, match against the body of the latest httpRequest
-			$compareAgainst = $http->getBody();
+			$compareAgainst = ($http) ? $http->getBody() : '';
 		}else{
 			$compareAgainst = $arguments[1];
 		}
