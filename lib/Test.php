@@ -37,9 +37,8 @@ class Test
 		
 		// see if the test is skipped or incomplete
 		foreach(array_keys($this->testStatus[$testName]) as $testKey){
-			if(preg_match('/markTest(.*?)/',$testKey)){ echo "return"; return $this; }
+			if(preg_match('/markTest(.*?)/',$testKey)){ return $this; }
 		}
-		
 
 		if(stristr($name,'assert')){
 			// it's an assertion!
