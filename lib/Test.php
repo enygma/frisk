@@ -25,12 +25,21 @@ class Test
 		$backtrace	= debug_backtrace();
 		$testName	= $backtrace[2]['function'];
 		$negate		= false;
+		if(!isset($this->testStatus[$testName])){
+			$this->testStatus[$testName]=array();
+		}
 		
 		// if the first part is "assert, call the assert.
 		// otherwise, try an action
 		$path = __DIR__.'/'.((stristr($name,'assert')) ? 'lib/Assert' : 'lib/Action');
 		$currentMessage=&self::getCurrentMessage();
 		$currentMessage::setData('currentArguments',$arg);
+		
+		// see if the test is skipped or incomplete
+		foreach(array_keys($this->testStatus[$testName]) as $testKey){
+			if(preg_match('/markTest(.*?)/',$testKey)){ echo "return"; return $this; }
+		}
+		
 
 		if(stristr($name,'assert')){
 			// it's an assertion!
@@ -64,7 +73,7 @@ class Test
 		}elseif(stristr($name,'marktest')){
 			// catch our "marktestskipped" etc...
 			preg_match('/marktest(.*)?/i',$name,$match);
-			$this->testStatus[$testName][$name]=array(null,ucwords($match[1].': '.$arg[0]));
+			$this->testStatus[$testName][$name]=array($match[1],ucwords($arg[0]));
 		}else{
 			// assume it's an action
 			$actionName='Action'.ucwords(strtolower($name));
