@@ -65,7 +65,7 @@ class ActionPost extends Action
 		}
 		$this->postHost		= $settings['host'];
 		$this->postLocation	= 'http://'.$this->postHost.$settings['location'];
-		$this->postData		= (isset($settings['postData'])) ? $settings['postData'] : '';
+		$this->postData		= (isset($settings['requestData'])) ? $settings['requestData'] : '';
 		
 		$msgObj=&parent::getCurrentMessage();
 		$msgObj::setData('postLocation',$this->postLocation);

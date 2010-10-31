@@ -52,6 +52,15 @@ class ActionGet extends Action
 		$this->getHost 		= $settings['host'];
 		$this->getLocation 	= 'http://'.$this->getHost.'/'.$settings['location'];
 		
+		// see if we need to append anything
+		if(isset($settings['requestData'])){
+			$requestString='';
+			foreach($settings['requestData'] as $requestKey => $requestValue){
+				$requestString.=urlencode($requestKey).'='.urlencode($requestValue).'&';
+			}
+			$this->getLocation.=(strpos($this->getLocation,'?')!=false) ? '&'.$requestString : '?'.$requestString;
+		}
+		
 		$msgObj=&parent::getCurrentMessage();
 		$msgObj::setData('getLocation',$this->getLocation);
 		$msgObj::setData('getHost',$this->getHost);
