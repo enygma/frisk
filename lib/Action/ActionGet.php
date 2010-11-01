@@ -50,7 +50,7 @@ class ActionGet extends Action
 		}
 		
 		$this->getHost 		= $settings['host'];
-		$this->getLocation 	= 'http://'.$this->getHost.'/'.$settings['location'];
+		$this->postLocation	= (strpos($settings['location'],'http://')===false) ? 'http://'.$this->postHost.$settings['location'] : $settings['location'];
 		
 		// see if we need to append anything
 		if(isset($settings['requestData'])){
@@ -75,6 +75,16 @@ class ActionGet extends Action
 		try {
 			try {
 				$httpReturn = $http->send();
+				
+				// Check for a redirect so we can follow...
+				$responseCode = $http->getResponseCode();
+				if($responseCode==301 && isset($arguments[0]['follow_redirects']) && $arguments[0]['follow_redirects']==true){
+					$header 					= $httpReturn->getHeaders();
+					$arguments[0]['location']	= $header['Location'];
+					$msgObj::setData('currentArguments',$arguments);
+					return ActionPost::execute();
+				}
+				
 			}catch(Exception $e){
 				throw new Exception($e->getMessage());
 				return false;

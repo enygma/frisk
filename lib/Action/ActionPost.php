@@ -35,6 +35,8 @@ class ActionPost extends Action
 	 */
 	public function execute()
 	{	
+		echo 'ActionPost::execute() - go go gadget!'."\n\n";
+		
 		$msgObj 	= &parent::getCurrentMessage();
 		$http 		= $msgObj::getData('currentHttp');
 		$arguments 	= $msgObj::getData('currentArguments');
@@ -56,6 +58,8 @@ class ActionPost extends Action
 			}
 		}
 		
+		echo 'settings: '; var_dump($settings);
+		
 		// Be sure we at least have the location
 		if(!$settings['location'] || gettype($settings['location'])!='string'){
 			throw new Exception(get_class().' Invalid post location!');
@@ -64,7 +68,9 @@ class ActionPost extends Action
 			throw new Exception('Action Post: Invalid hostname!');
 		}
 		$this->postHost		= $settings['host'];
-		$this->postLocation	= 'http://'.$this->postHost.$settings['location'];
+
+		$this->postLocation	= (strpos($settings['location'],'http://')===false) ? 'http://'.$this->postHost.$settings['location'] : $settings['location'];
+		
 		$this->postData		= (isset($settings['requestData'])) ? $settings['requestData'] : '';
 		
 		$msgObj=&parent::getCurrentMessage();
@@ -90,6 +96,16 @@ class ActionPost extends Action
 		try {
 			try {
 				$httpReturn = $http->send();
+				
+				// Check for a redirect so we can follow...
+				$responseCode = $http->getResponseCode();
+				if($responseCode==301 && isset($arguments[0]['follow_redirects']) && $arguments[0]['follow_redirects']==true){
+					$header 					= $httpReturn->getHeaders();
+					$arguments[0]['location']	= $header['Location'];
+					$msgObj::setData('currentArguments',$arguments);
+					return ActionPost::execute();
+				}
+				
 			}catch(Exception $e){
 				throw new Exception($e->getMessage());
 				return false;
