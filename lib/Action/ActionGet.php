@@ -78,7 +78,7 @@ class ActionGet extends Action
 				
 				// Check for a redirect so we can follow...
 				$responseCode = $http->getResponseCode();
-				if($responseCode==301 && isset($arguments[0]['follow_redirects']) && $arguments[0]['follow_redirects']==true){
+				if($responseCode==301 && isset($arguments[0]['followRedirects']) && $arguments[0]['followRedirects']==true){
 					$header 					= $httpReturn->getHeaders();
 					$arguments[0]['location']	= $header['Location'];
 					$msgObj::setData('currentArguments',$arguments);
