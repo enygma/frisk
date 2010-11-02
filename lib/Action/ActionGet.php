@@ -50,7 +50,7 @@ class ActionGet extends Action
 		}
 		
 		$this->getHost 		= $settings['host'];
-		$this->postLocation	= (strpos($settings['location'],'http://')===false) ? 'http://'.$this->postHost.$settings['location'] : $settings['location'];
+		$this->postLocation	= (strpos($settings['location'],'http://')===false) ? 'http://'.$this->getHost.$settings['location'] : $settings['location'];
 		
 		// see if we need to append anything
 		if(isset($settings['requestData'])){
