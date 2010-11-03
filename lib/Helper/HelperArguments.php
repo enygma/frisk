@@ -19,7 +19,8 @@ class HelperArguments extends Helper
 		'test'	  	=> array('[test name]','Run a single test with this name'),
 		'verbose' 	=> array('','Add more verbose reporting to testing output'),
 		'tests-dir' 	=> array('[path]','Definite the directory to pull tests from'),
-		'help'	  	=> array('','Display this message')
+		'help'	  	=> array('','Display this message'),
+		'outputFile'	=> array('[path]','Path to file to write test results into')
 	);
 
 	/**
