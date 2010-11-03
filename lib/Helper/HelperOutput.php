@@ -98,7 +98,7 @@ class HelperOutput extends Helper
 	 */
 	public static function asXml($outputData)
 	{
-		return 'not implemented';
+		return 'XML output formatting not yet implemented';
 	}
 	
 	/**
@@ -112,6 +112,14 @@ class HelperOutput extends Helper
 		return json_encode($outputData);	
 	}
 
+	/**
+	 * Write the output data into a file - checks for permissions too
+	 *
+	 * @param string $fullPath Full path, including filename, to write to
+	 * @param string $outputData Text data to write to the file
+	 * @return void
+	 * @throws Exception
+	 */
 	public static function writeToFile($fullPath,$outputData)
 	{
 		if(is_file($fullPath)){
@@ -121,7 +129,6 @@ class HelperOutput extends Helper
 
 		if($directoryResource = opendir($directoryPath)){
 			file_put_contents($fullPath,$outputData);
-			
 		}else{
 			throw new Exception('Cannot write to location: '.$directoryPath);
 		}
