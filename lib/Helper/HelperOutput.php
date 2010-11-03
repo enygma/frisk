@@ -111,6 +111,21 @@ class HelperOutput extends Helper
 	{
 		return json_encode($outputData);	
 	}
+
+	public static function writeToFile($fullPath,$outputData)
+	{
+		if(is_file($fullPath)){
+			throw new Exception('File "'.$fullPath.'" exists! Please choose another filename.');
+		}
+		$directoryPath = substr($fullPath,0,strrpos($fullPath,'/'));
+
+		if($directoryResource = opendir($directoryPath)){
+			file_put_contents($fullPath,$outputData);
+			
+		}else{
+			throw new Exception('Cannot write to location: '.$directoryPath);
+		}
+	}
 }
 
 ?>

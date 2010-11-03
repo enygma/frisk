@@ -66,6 +66,11 @@ try{
 	if(HelperArguments::getArgument('quiet')==null){
 		echo $executionOutput;
 	}
+	if(HelperArguments::getArgument('outputFile')!==null){
+		// write the output to a file
+		$filePath = HelperArguments::getArgument('outputFile');
+		HelperOutput::writeToFile($filePath,$executionOutput);
+	}
 }catch(Exception $e){
 	echo 'ERROR: '.$e->getMessage()."\n\n";
 }
