@@ -43,6 +43,15 @@ $runner = new Runner();
 try{
 	HelperConfig::execute(null);
 	
+	if($suite=HelperArguments::getArgument('suite')){
+		echo 'suite:'.$suite;
+		// look for the suite config in the tests config
+		
+		HelperSuite::execute($suite);
+		
+		// find the directory and limit down the tests to just those
+	}
+	
 	ob_start();
 	$runner->execute();
 

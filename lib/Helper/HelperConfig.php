@@ -12,7 +12,7 @@ class HelperConfig extends Helper
 	 * Sets up some defaults
 	 */
 	static $currentConfig	= array(
-		'tests_directory' => './tests'
+		'main'=>array('tests_directory' => './tests')
 	);
 	
 	/**
@@ -21,11 +21,12 @@ class HelperConfig extends Helper
 	 * @param array $optionalConfig Optional configuration values (not implemented)
 	 * @return void
 	 */
-	public function execute($optionalConfig=null)
+	public function execute($optionalConfig=null,$configKey='main')
 	{
 		// if the "config" value of the arguments is set, look for that file....
-		if($configFile=HelperArguments::getArgument('config')){
-			self::loadConfig($configFile);
+		if($configFile=HelperArguments::getArgument('config') || $optionalConfig!=null){
+			if($optionalConfig!=null){ $configFile=$optionalConfig; }
+			self::loadConfig($configFile,$configKey);
 		}
 	}
 	
@@ -36,7 +37,7 @@ class HelperConfig extends Helper
 	 * @throws Exception
 	 * @return void
 	 */
-	private function loadConfig($configFilePath)
+	private function loadConfig($configFilePath,$configKey='main')
 	{
 		if(is_file($configFilePath)){
 			$configSettings = parse_ini_file($configFilePath,true);
@@ -44,7 +45,7 @@ class HelperConfig extends Helper
 			foreach($configSettings as $sectionName => $sectionValue){
 				foreach($sectionValue as $settingName => $settingValue){
 					$configName = $sectionName.'_'.$settingName;
-					HelperConfig::setConfigValue($configName,$settingValue);
+					HelperConfig::setConfigValue($configName,$settingValue,$configKey);
 				}
 			}
 		}else{
@@ -59,9 +60,9 @@ class HelperConfig extends Helper
 	 * @param mixed $value Configuration value
 	 * @return void
 	 */
-	public static function setConfigValue($name,$value)
+	public static function setConfigValue($name,$value,$configKey='main')
 	{
-		self::$currentConfig[$name]=$value;
+		self::$currentConfig[$configKey][$name]=$value;
 	}
 	
 	/**
@@ -69,9 +70,9 @@ class HelperConfig extends Helper
 	 *
 	 * @param string $name Configuration key name
 	 */
-	public static function deleteConfigValue($name)
+	public static function deleteConfigValue($name,$configKey='main')
 	{
-		unset(self::$currentConfig[$name]);
+		unset(self::$currentConfig[$configKey][$name]);
 	}
 	
 	/**
@@ -79,9 +80,19 @@ class HelperConfig extends Helper
 	 *
 	 * @param string $name Configuration key name
 	 */
-	public static function getConfigValue($name)
+	public static function getConfigValue($name,$configKey='main')
 	{
-		return (isset(self::$currentConfig[$name])) ? self::$currentConfig[$name] : null;
+		return (isset(self::$currentConfig[$configKey][$name])) ? self::$currentConfig[$configKey][$name] : null;
+	}
+	
+	/**
+	 * Return the full set of values in a configuration key/section
+	 *
+	 * @param string $configKey Configuration key to return values from
+	 */
+	public static function getConfigKeyValues($configKey='main')
+	{
+		return (isset(self::$currentConfig[$configKey])) ? self::$currentConfig[$configKey] : null;
 	}
 }
 

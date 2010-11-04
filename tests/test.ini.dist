@@ -1,2 +1,2 @@
-[suite : api tests]
+[suite : api_tests]
 directory = /www/htdocs/frisk/tests/api
