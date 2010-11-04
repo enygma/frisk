@@ -35,8 +35,6 @@ class ActionPost extends Action
 	 */
 	public function execute()
 	{	
-		echo 'ActionPost::execute() - go go gadget!'."\n\n";
-		
 		$msgObj 	= &parent::getCurrentMessage();
 		$http 		= $msgObj::getData('currentHttp');
 		$arguments 	= $msgObj::getData('currentArguments');
@@ -57,8 +55,6 @@ class ActionPost extends Action
 				$settings[$argumentKey]=($arguments[$argumentIndex]) ? $arguments[$argumentIndex] : null;
 			}
 		}
-		
-		echo 'settings: '; var_dump($settings);
 		
 		// Be sure we at least have the location
 		if(!$settings['location'] || gettype($settings['location'])!='string'){
