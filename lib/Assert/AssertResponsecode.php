@@ -6,7 +6,7 @@
  * @package Frisk
  *
  */
-class AssertResponseCode extends Assert
+class AssertResponsecode extends Assert
 {
 	public function assertSetup(){}
 	public function assertTeardown(){}

@@ -18,10 +18,15 @@ class HelperSession extends Helper
 	 */
 	public function execute($httpHeaders)
 	{
-		foreach($httpHeaders as $headerKey => $headerValue){
-			if($headerKey=='Set-Cookie' && strpos($headerValue,'PHPSESSID')!==false){
-				$cookieParts=explode(';',str_replace('PHPSESSID=','',$headerValue));
-				self::startSession(trim($cookieParts[0]));
+		foreach($httpHeaders as $headerKey => $headerValue){;
+			if($headerKey=='Set-Cookie'){
+				if(!is_array($headerValue)){ $headerValue=array($headerValue); }
+				foreach($headerValue as $cookieValue){
+					if(strpos($cookieValue,'PHPSESSID')!==false){
+						$cookieParts=explode(';',str_replace('PHPSESSID=','',$cookieValue));
+						self::startSession(trim($cookieParts[0]));
+					}
+				}
 			}
 		}
 	}
