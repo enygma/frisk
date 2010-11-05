@@ -6,11 +6,17 @@ Frisk is (mostly) a proof-of-concept functional testing framework designed to be
 from the command line. It allows for simple gets/posts and passing the results through 
 assertions to test the resulting content.
 
+------------
+* NOTE: For the most up-to-date information about frisk, please visit the wiki on the
+	project's github page: https://github.com/enygma/frisk/wiki
+-------------
+
 The current feature set allows you to:
 	- make POST requests
 	- make GET requests
 	- check results for exact equal
 	- check results for containing match
+	- and more...
 
 Requirements
 --------------
@@ -46,10 +52,5 @@ For example:
 	versus
 	->assertNotContains('foo');
 
-TODO
---------------
-> allow for a config file
-> (obvious) add more actions and assertions...
-> handle action/assert find failures
-
+-------------------
 Author: Chris Cornutt <ccornutt@phpdeveloper.org>
