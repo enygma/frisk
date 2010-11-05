@@ -2,4 +2,5 @@
 directory = /www/htdocs/frisk/tests/api
 
 [suite:test]
-directory = /www/htdocs/frisk/tests/test
+directory = /home/ccornutt/work/frisk/tests/test
+tests = ThatTest,ThisTest

@@ -4,8 +4,23 @@
 
 class Runner
 {	
+	/**
+	 * Path to locate tests
+	 * @var string
+	 */
 	public $testsDir	= '';
-	public $testResults = array();
+
+	/**
+	 * Contains test results (pass/fail & mesasges) 
+	 * @var array
+	 */
+	public $testResults 	= array();
+
+	/**
+	 * If defined, only tests with names in array should be run
+	 * @var array
+	 */
+	private $runOnly	= array();
 	
 	public function __construct(){
 
@@ -16,6 +31,14 @@ class Runner
 		}else{
 			$this->testsDir = __DIR__.'/../tests';
 		}
+		// check for a suite
+		if($suite=HelperArguments::getArgument('suite')){
+			HelperSuite::execute();
+                        $suiteConfig = HelperSuite::findSuiteConfigByName($suite);
+			$this->testsDir = $suiteConfig['directory'];
+			if(isset($suiteConfig['tests'])){ $this->runOnly = explode(',',$suiteConfig['tests']); }
+		}
+		set_include_path(get_include_path().PATH_SEPARATOR.$this->testsDir);
 	}
 	
 	public function execute($tests=null)
@@ -54,9 +77,15 @@ class Runner
 	public function loadTests($singleTestName=null){
 		$testFiles=array();
 		$dir = new DirectoryIterator($this->testsDir);
+
 		foreach($dir as $file){
 			if(!$file->isDot() && strstr($file->getFilename(),'Test') && substr($file->getFilename(),-3)=='php'){
+
 				$testName=str_replace('.php','',$file->getFilename());
+
+				if(!empty($this->runOnly) && !in_array($testName,$this->runOnly)){
+					continue;
+                                }
 				
 				if($singleTestName && $testName==$singleTestName){
 					$testFiles[]=$testName;

@@ -13,7 +13,7 @@ class HelperSuite extends Helper
 	/**
 	 * Load the test-specific configuration and get the tests detail
 	 */
-	public function execute($suiteName)
+	public function execute($suiteConfig = null)
 	{		
 		$configFilePath = HelperConfig::getConfigValue('tests_directory').'/'.self::$suiteConfig;
 		HelperConfig::execute($configFilePath,'tests');

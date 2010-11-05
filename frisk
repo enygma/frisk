@@ -28,8 +28,7 @@ set_include_path(get_include_path().
 	PATH_SEPARATOR.__DIR__.'/lib/Assert'.
 	PATH_SEPARATOR.__DIR__.'/lib/Helper'.
 	PATH_SEPARATOR.__DIR__.'/lib/Filter'.
-	PATH_SEPARATOR.__DIR__.'/lib/Exceptions'.
-	PATH_SEPARATOR.__DIR__.'/tests');
+	PATH_SEPARATOR.__DIR__.'/lib/Exceptions');
 
 HelperArguments::execute($_SERVER['argv']);
 
@@ -42,11 +41,6 @@ if(HelperArguments::getArgument('help')){
 $runner = new Runner();
 try{
 	HelperConfig::execute(null);
-	
-	if($suite=HelperArguments::getArgument('suite')){
-		
-		HelperSuite::execute($suite);
-	}
 	
 	ob_start();
 	$runner->execute();
