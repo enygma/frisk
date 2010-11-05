@@ -20,7 +20,8 @@ class HelperArguments extends Helper
 		'verbose' 	=> array('','Add more verbose reporting to testing output'),
 		'tests-dir' 	=> array('[path]','Definite the directory to pull tests from'),
 		'help'	  	=> array('','Display this message'),
-		'outputFile'	=> array('[path]','Path to file to write test results into')
+		'outputFile'	=> array('[path]','Path to file to write test results into'),
+		'suite'		=> array('[suite name]','Name of test suite to run')
 	);
 
 	/**
