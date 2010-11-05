@@ -1,2 +1,5 @@
-[suite : api_tests]
+[suite:api]
 directory = /www/htdocs/frisk/tests/api
+
+[suite:test]
+directory = /www/htdocs/frisk/tests/test

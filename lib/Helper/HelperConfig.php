@@ -42,10 +42,21 @@ class HelperConfig extends Helper
 		if(is_file($configFilePath)){
 			$configSettings = parse_ini_file($configFilePath,true);
 			
+			// If there's a colon in the $sectionName, use it as a type
 			foreach($configSettings as $sectionName => $sectionValue){
-				foreach($sectionValue as $settingName => $settingValue){
-					$configName = $sectionName.'_'.$settingName;
-					HelperConfig::setConfigValue($configName,$settingValue,$configKey);
+				if(strpos($sectionName,':')!=false){
+					$parts 		= explode(':',$sectionName);
+					$settings 	= array();
+					foreach($sectionValue as $settingName => $settingValue){
+						$settings[$settingName]=$settingValue;
+					}
+					$settings['name']=$parts[1];
+					HelperConfig::appendConfigValue($parts[0],$settings,$configKey);
+				}else{
+					foreach($sectionValue as $settingName => $settingValue){
+						$configName = $sectionName.'_'.$settingName;
+						HelperConfig::setConfigValue($configName,$settingValue,$configKey);
+					}
 				}
 			}
 		}else{
@@ -63,6 +74,11 @@ class HelperConfig extends Helper
 	public static function setConfigValue($name,$value,$configKey='main')
 	{
 		self::$currentConfig[$configKey][$name]=$value;
+	}
+
+	public static function appendConfigValue($name,$value,$configKey='main')
+	{
+		self::$currentConfig[$configKey][$name][]=$value;
 	}
 	
 	/**
