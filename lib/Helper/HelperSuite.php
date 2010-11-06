@@ -9,6 +9,7 @@ class HelperSuite extends Helper
 {
 	private static $suiteConfig = 'test.ini.dist';
 	private static $suiteSet = array();
+	private static $suiteConfigKey = 'tests';
 	
 	/**
 	 * Load the test-specific configuration and get the tests detail
@@ -16,7 +17,7 @@ class HelperSuite extends Helper
 	public function execute($suiteConfig = null)
 	{		
 		$configFilePath = HelperConfig::getConfigValue('tests_directory').'/'.self::$suiteConfig;
-		HelperConfig::execute($configFilePath,'tests');
+		HelperConfig::execute($configFilePath,self::$suiteConfigKey);
 	}
 
 	/**
@@ -27,7 +28,7 @@ class HelperSuite extends Helper
 	 */
 	public function findSuiteConfigByName($suiteName)
 	{
-		$testSettings 	= HelperConfig::getConfigKeyValues('tests');
+		$testSettings 	= HelperConfig::getConfigKeyValues(self::$suiteConfigKey);
 		$suiteConfig 	= array();
 		foreach($testSettings['suite'] as $settings){
 			if($settings['name']==$suiteName){

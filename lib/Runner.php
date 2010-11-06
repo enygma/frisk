@@ -82,10 +82,8 @@ class Runner
 			if(!$file->isDot() && strstr($file->getFilename(),'Test') && substr($file->getFilename(),-3)=='php'){
 
 				$testName=str_replace('.php','',$file->getFilename());
-
-				if(!empty($this->runOnly) && !in_array($testName,$this->runOnly)){
-					continue;
-                                }
+				
+				if(!$this->isTestRunOnly($testName)){ continue; }
 				
 				if($singleTestName && $testName==$singleTestName){
 					$testFiles[]=$testName;
@@ -95,6 +93,23 @@ class Runner
 			}
 		}
 		return $testFiles;
+	}
+	
+	public function isTestRunOnly($testName)
+	{
+		if(empty($this->runOnly)){ return true; }
+
+		// check for exact match first
+		if(in_array($testName,$this->runOnly)){
+			return true;
+		}
+		// try it out as a regex
+		foreach($this->runOnly as $testMatch){
+			if(@preg_match($testMatch,$testName)){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 }
