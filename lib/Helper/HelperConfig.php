@@ -26,7 +26,11 @@ class HelperConfig extends Helper
 		// if the "config" value of the arguments is set, look for that file....
 		if($configFile=HelperArguments::getArgument('config') || $optionalConfig!=null){
 			if($optionalConfig!=null){ $configFile=$optionalConfig; }
-			self::loadConfig($configFile,$configKey);
+			try {
+				self::loadConfig($configFile,$configKey);
+			}catch(Exception $e){
+				throw new Exception($e->getMessage());
+			}
 		}
 	}
 	
@@ -60,7 +64,7 @@ class HelperConfig extends Helper
 				}
 			}
 		}else{
-			throw new Exception(get_class().': Config file not found!');
+			throw new Exception(get_class().': Config file not found at '.$configFilePath.'!');
 		}
 	}
 	

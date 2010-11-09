@@ -38,8 +38,9 @@ if(HelperArguments::getArgument('help')){
 	die();
 }
 
-$runner = new Runner();
 try{
+	$runner = new Runner();
+
 	HelperConfig::execute(null);
 	
 	ob_start();

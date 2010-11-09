@@ -7,7 +7,7 @@
  */
 class HelperSuite extends Helper
 {
-	private static $suiteConfig = 'test.ini.dist';
+	private static $suiteConfig = 'test.ini';
 	private static $suiteSet = array();
 	private static $suiteConfigKey = 'tests';
 	
@@ -17,7 +17,11 @@ class HelperSuite extends Helper
 	public function execute($suiteConfig = null)
 	{		
 		$configFilePath = HelperConfig::getConfigValue('tests_directory').'/'.self::$suiteConfig;
-		HelperConfig::execute($configFilePath,self::$suiteConfigKey);
+		try {
+			HelperConfig::execute($configFilePath,self::$suiteConfigKey);
+		}catch(Exception $e){
+			throw new Exception($e->getMessage());
+		}
 	}
 
 	/**

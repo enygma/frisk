@@ -22,6 +22,9 @@ class Runner
 	 */
 	private $runOnly	= array();
 	
+	/**
+	 * @throws Exception
+	 */
 	public function __construct(){
 
 		if($testsDir = HelperArguments::getArgument('tests-dir')){
@@ -33,7 +36,11 @@ class Runner
 		}
 		// check for a suite
 		if($suite=HelperArguments::getArgument('suite')){
-			HelperSuite::execute();
+			try {
+				HelperSuite::execute();
+			}catch(Exception $e){
+				throw new Exception($e->getMessage());
+			}
                         $suiteConfig = HelperSuite::findSuiteConfigByName($suite);
 			$this->testsDir = $suiteConfig['directory'];
 			if(isset($suiteConfig['tests'])){ $this->runOnly = explode(',',$suiteConfig['tests']); }
