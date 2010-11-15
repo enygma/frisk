@@ -67,7 +67,13 @@ class Runner
 			$methods = $ref->getMethods();
 		
 			foreach($methods as $method){
-				if($method->class==get_class($testObj)){
+				if( $method->class==get_class($testObj) && strpos(strtolower($method->name),'test')===0 ){
+					
+					// run the setUp method
+					if(method_exists($testObj,'setUp')){
+						$testObj->setUp();
+					}
+					
 					// set up our message object
 					$msgObj  = new Message();
 					$msgObj::setCurrentTest($method->name);
@@ -76,6 +82,11 @@ class Runner
 					$testObj->{$method->name}($msgObj);
 					if(!empty($testObj->testStatus)){
 						$this->testResults[$test]=$testObj->testStatus;
+					}
+					
+					// run the tearDown method
+					if(method_exists($testObj,'tearDown')){
+						$testObj->tearDown();
 					}
 				}
 			}
