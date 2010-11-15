@@ -62,6 +62,10 @@ class Runner
 		foreach($tests as $test){
 			$testObj = new $test();
 			
+			if(method_exists($testObj,'setUpBeforeClass')){
+				$testObj->setUpBeforeClass();
+			}
+			
 			// We have our class of tests, reflect the methods and execute
 			$ref = new ReflectionClass($testObj);
 			$methods = $ref->getMethods();
@@ -89,6 +93,10 @@ class Runner
 						$testObj->tearDown();
 					}
 				}
+			}
+			
+			if(method_exists($testObj,'tearDownAfterClass')){
+				$testObj->tearDownAfterClass();
 			}
 		}
 	}
