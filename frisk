@@ -12,7 +12,6 @@
 * > lib/ - contains application libraries
 * > tests/ - default directory for tests, can be overriden in config 
 *
-* Autoloader points to the lib/asserts directory for handling assertion calls 
 */
 
 // Before we do anything, be sure the extension is loaded
