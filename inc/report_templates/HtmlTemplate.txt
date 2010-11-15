@@ -1,0 +1,14 @@
+<html>
+<head>
+	<style>
+		span.pass { background-color: #08DD08; }
+		span.fail { background-color: #BB1111; }
+	</style>
+</head>
+<body>
+<table cellpadding="3" cellspacing="0" border="1">
+
+
+</table>
+</body>
+</html>
