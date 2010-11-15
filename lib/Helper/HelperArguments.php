@@ -21,7 +21,8 @@ class HelperArguments extends Helper
 		'tests-dir' 	=> array('[path]','Definite the directory to pull tests from'),
 		'help'	  	=> array('','Display this message'),
 		'outputFile'	=> array('[path]','Path to file to write test results into'),
-		'suite'		=> array('[suite name]','Name of test suite to run')
+		'suite'		=> array('[suite name]','Name of test suite to run'),
+		'generate-report'=>array('','Generate HTML report')
 	);
 
 	/**

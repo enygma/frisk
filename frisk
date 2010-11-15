@@ -70,6 +70,10 @@ try{
 		$filePath = HelperArguments::getArgument('outputFile');
 		HelperOutput::writeToFile($filePath,$executionOutput);
 	}
+
+	if(HelperArguments::getArgument('generate-report')!==null){
+		HelperReporting::execute($runner->testResults);
+	}
 }catch(Exception $e){
 	echo 'ERROR: '.$e->getMessage()."\n\n";
 }
