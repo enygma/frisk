@@ -2,9 +2,13 @@
 Frisk : Lightweight Functional Testing
 #######################
 
-Frisk is (mostly) a proof-of-concept functional testing framework designed to be run
-from the command line. It allows for simple gets/posts and passing the results through 
-assertions to test the resulting content.
+Frisk is functional testing framework designed to be run from the command line. It 
+allows for simple gets/posts and passing the results through assertions to test the 
+resulting content.
+
+If you're familiar at all with the PHP unit testing framework PHPUnit (http://phpunit.de)
+you'll find a lot of similarities  with frisk. Several of the concepts and methods names
+have been borrowed to help make frisk easier to pick up.
 
 ------------
 * NOTE: For the most up-to-date information about frisk, please visit the wiki on the
@@ -16,6 +20,7 @@ The current feature set allows you to:
 	- make GET requests
 	- check results for exact equal
 	- check results for containing match
+	- oraganize your code into testing suites
 	- and more...
 
 Requirements
