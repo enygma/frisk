@@ -8,6 +8,7 @@
 <body>
 <table cellpadding="3" cellspacing="0" border="1">
 
+[report_table_body]
 
 </table>
 </body>

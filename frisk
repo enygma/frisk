@@ -30,6 +30,7 @@ set_include_path(get_include_path().
 	PATH_SEPARATOR.__DIR__.'/lib/Exceptions');
 
 HelperArguments::execute($_SERVER['argv']);
+HelperConfig::setConfigValue('basedir',__DIR__);
 
 // See if they just need help
 if(HelperArguments::getArgument('help')){

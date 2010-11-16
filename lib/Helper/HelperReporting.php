@@ -9,6 +9,9 @@
 class HelperReporting extends Helper
 {
 
+	private static $reportTemplateDir 	= '';
+	private static $reportExportDir		= '';
+
 	/**
 	 * Local container for testing results
 	 */
@@ -23,11 +26,22 @@ class HelperReporting extends Helper
 	 */
 	public function execute($testingResults,$outputType = 'html')
 	{
-		self::$testingResults=$testingResults;
+		self::$reportTemplateDir 	= HelperConfig::getConfigValue('basedir').'/inc/report_templates';
+		self::$reportExportDir 		= Helperconfig::getConfigValue('basedir').'/inc/report_export';
+		self::$testingResults		= $testingResults;
+
+		// Be sure the directories exist!
+		if(!is_dir(self::$reportTemplateDir)){
+			throw new Exception('Report template directory does not exist! ('.self::$reportTemplateDir.')');
+		}
+		if(!is_dir(self::$reportExportDir)){
+			throw new Exception('Report export directory does not exist! ('.self::$reportExportDir.')');
+		}
 
 		$methodName = 'report'.ucwords(strtolower($outputType));
 		if(method_exists(__CLASS__,$methodName)){
-			self::$methodName($testingResults);
+			$reportData = self::$methodName($testingResults);
+			self::exportReport($reportData,$outputType);
 		}else{
 			throw new Exception(ucwords(strtolower($outputType)).' reporting not allowed.');
 		}
@@ -41,8 +55,8 @@ class HelperReporting extends Helper
 	 */
 	public function loadReportTemplate($reportType = 'html')
 	{
-		$reportData = '';
-		return $reportData;	
+		$filePath = self::$reportTemplateDir.'/'.ucwords(strtolower($reportType)).'Template.txt';
+		return (is_file($filePath)) ? file_get_contents($filePath) : null;
 	}
 	
 	/**
@@ -52,10 +66,28 @@ class HelperReporting extends Helper
 	 * @param array $reportData Test run results
 	 * @return templated results
 	 */
-	public function applyReportTemplate($reportType = 'html')
+	public function applyReportTemplate($reportType = 'html',$reportData)
 	{
 		$template = self::loadReportTemplate($reportType);
-		return null;
+		$replaceKeys = array_keys($reportData);
+		foreach($replaceKeys as $index => $key){
+			$replaceKeys[$index]='['.$key.']';	
+		}
+		$template = str_replace($replaceKeys,array_values($reportData),$template);
+
+		return $template;
+	}
+
+	/**
+	 * Export report data to the export directory by: date.type_ext
+	 *
+	 * @param string $reportData string of data resulting from applyTemplate
+	 * @return void
+	 */
+	public function exportReport($reportData,$outputType)
+	{
+		$filePath = self::$reportExportDir.'/'.date('YmdHis').'.'.strtolower($outputType);
+		file_put_contents($filePath,$reportData);
 	}
 
 	/**
@@ -68,19 +100,7 @@ class HelperReporting extends Helper
 	 */
 	public function reportHtml($results)
 	{
-		// conver this over with the two methods above
-		$html=sprintf('
-			<html>
-			<head>
-				<style>
-				span.pass { background-color: #08DD08; }
-				span.fail { background-color: #BB1111; }
-				</style>
-			</head>
-			<body>
-			<table cellpadding="3" cellspacing="0" border="1">
-		');
-		// output the results in a single HTML file
+		$html='';
 		foreach($results as $testName => $tests){
 			$html.='<tr><td colspan="">'.$testName.'</tr>'."\n";
 			foreach($tests as $methodName => $methods){
@@ -94,16 +114,8 @@ class HelperReporting extends Helper
 				}
 			}
 		}
-
-		$html.=sprintf('
-			</table>
-			</body>
-			</html>
-		');
-
-		echo $html;
-
-		return $html;
+		$templateData = array('report_table_body'=>$html);
+		return self::applyReportTemplate('html',$templateData);
 	}
 }
 
