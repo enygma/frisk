@@ -30,6 +30,10 @@ class HelperReporting extends Helper
 		self::$reportExportDir 		= Helperconfig::getConfigValue('basedir').'/inc/report_export';
 		self::$testingResults		= $testingResults;
 
+		if($reportExportDir = HelperArguments::getArgument('report-export-dir')){
+			self::$reportExportDir = $reportExportDir;
+		}
+
 		// Be sure the directories exist!
 		if(!is_dir(self::$reportTemplateDir)){
 			throw new Exception('Report template directory does not exist! ('.self::$reportTemplateDir.')');
