@@ -49,7 +49,7 @@ class ActionPost extends Action
 			$settings = $arguments[0];
 		}else{
 			// if we're just using the normal arguments - map them
-			$settingKeys = array('location','host','postData','outputFormat');
+			$settingKeys = array('location','host','requestData','outputFormat');
 			foreach($arguments as $argumentIndex => $argument){
 				$argumentKey = $settingKeys[$argumentIndex];
 				$settings[$argumentKey]=($arguments[$argumentIndex]) ? $arguments[$argumentIndex] : null;
