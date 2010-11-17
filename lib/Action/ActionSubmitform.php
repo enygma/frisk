@@ -38,7 +38,7 @@ class ActionSubmitform extends Action
 		$arguments=array(
 			$urlParts['path'],
 			$urlParts['host'],
-			$arguments
+			$arguments[0]
 		);
 		$msgObj::setData('currentArguments',$arguments);
 		$post = new ActionPost($httpRequest,$arguments);
