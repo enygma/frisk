@@ -23,7 +23,9 @@ class HelperArguments extends Helper
 		'outputFile'	=> array('[path]','Path to file to write test results into'),
 		'suite'		=> array('[suite name]','Name of test suite to run'),
 		'generate-report'=>array('','Generate HTML report'),
-		'report-export-dir'=>array('[path]','Path to export reports into')
+		'report-export-dir'=>array('[path]','Path to export reports into'),
+		'stop-on-skipped'=>array('','Stop when execution hits a skipped test'),
+		'stop-on-incomplete'=>array('','Stop when execution hits an incomplete test')
 	);
 
 	/**

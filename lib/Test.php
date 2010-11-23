@@ -37,7 +37,9 @@ class Test
 		
 		// see if the test is skipped or incomplete
 		foreach(array_keys($this->testStatus[$testName]) as $testKey){
-			if(preg_match('/markTest(.*?)/',$testKey)){ return $this; }
+			if(preg_match('/markTest(.*?)/',$testKey)){ 
+				return $this; 
+			}
 		}
 
 		if(stristr($name,'assert')){
@@ -72,6 +74,14 @@ class Test
 		}elseif(stristr($name,'marktest')){
 			// catch our "marktestskipped" etc...
 			preg_match('/marktest(.*)?/i',$name,$match);
+
+			if(isset($match[1])){
+				$findAttribute = 'stop-on-'.strtolower($match[1]);
+				if(HelperArguments::getArgument($findAttribute)){
+					die("\n!! Stop on ".strtolower($match[1])." : ".$testName." \nMessage: ".$arg[0]."\n\n");
+				}
+			}
+
 			$this->testStatus[$testName][$name]=array($match[1],ucwords($arg[0]));
 		}else{
 			// assume it's an action
