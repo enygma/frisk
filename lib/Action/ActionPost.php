@@ -77,6 +77,10 @@ class ActionPost extends Action
 		$http = new HttpRequest($this->postLocation,HttpRequest::METH_POST);
 		if(is_array($this->postData)){
 			$http->setPostFields($this->postData);
+		}elseif($this->postData instanceof SimpleXMLElement){
+			// we're going to convert this to a literal XML string
+			$this->postData = $this->postData->asXML();
+			$http->setBody($this->postData);
 		}else{
 			$http->setBody($this->postData);
 		}
