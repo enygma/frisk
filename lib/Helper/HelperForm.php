@@ -33,7 +33,8 @@ class HelperForm extends Helper
 	/**
 	* Check to see if a form field exists by that name
 	*/
-	public static function isFormField($fieldName,$fieldType='name'){
+	public static function isFormField($fieldName,$fieldType='name')
+	{
 		$matches=self::$parsedHTML->xpath("//*[@".$fieldType."='".$fieldName."']");
 		// check to ensure that there's at least one matching
 		if($matches && count($matches)>0){
@@ -48,12 +49,29 @@ class HelperForm extends Helper
 	/**
 	* Check to see if a form field with that ID exists
 	*/
-	public static function isFormFieldById($fieldId){
+	public static function isFormFieldById($fieldId)
+	{
 		return self::isFormField($fieldId,'id');
 	}
 	
-	public static function setFormData($formData){
+	/**
+	 * Set the data to submit in the form
+	 */
+	public static function setFormData($formData)
+	{
 		self::$postData = $formData;
+	}
+
+	// Type-specific actions
+	
+	/**
+	 * Click button in HTML page
+	 * @param string $fieldName name of button to "click"
+	 * @return void
+	 */
+	public static function clickButton($fieldName)
+	{
+		// placeholder
 	}
 
 }
